@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select City</title>
+    <!-- Add Tailwind CSS CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+
+<body class="p-4">
+
+    <h2 class="text-2xl font-bold mb-4">Which city do you want to see events for?</h2>
+
+    <form method="post" class="max-w-md mx-auto">
+        {{ form.hidden_tag() }}
+        <div class="mb-4">
+            <label><input type="checkbox" id="select_all" class="mr-2"> Select All</label>
+        </div>
+        {% for subfield in form.city %}
+        <div class="mb-2">
+            {{ subfield(class='form-checkbox') }}
+            {{ subfield.label(class='ml-2') }}
+        </div>
+        {% endfor %}
+        <input type="submit" value="Submit"
+            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+    </form>
+
+    <script>
+        // Function to update Select All checkbox based on individual checkboxes
+        function updateSelectAll() {
+            var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            var allChecked = true;
+            checkboxes.forEach(function (checkbox) {
+                if (checkbox !== selectAllCheckbox && !checkbox.checked) {
+                    allChecked = false;
+                }
+            });
+            selectAllCheckbox.checked = allChecked;
+        }
+
+        var selectAllCheckbox = document.getElementById('select_all');
+        selectAllCheckbox.onclick = function () {
+            var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            checkboxes.forEach(function (checkbox) {
+                checkbox.checked = selectAllCheckbox.checked;
+            });
+        }
+
+        var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+        checkboxes.forEach(function (checkbox) {
+            if (checkbox !== selectAllCheckbox) {
+                checkbox.onclick = updateSelectAll;
+            }
+        });
+    </script>
+
+</body>
+
+</html>
