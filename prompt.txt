@@ -1,5 +1,0 @@
-Add modern styling to this html code using tailwindcss cdn.
-
-sqlite3-production-8eda.up.railway.app
-
-fnlvfmuw7r72pqd6

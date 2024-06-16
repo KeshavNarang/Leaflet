@@ -70,11 +70,16 @@ def login():
     google_provider_cfg = get_google_provider_cfg()
     authorization_endpoint = google_provider_cfg["authorization_endpoint"]
     
+    redirect_uri = request.base_url
+    if redirect_uri.startswith("http:"):
+        redirect_uri = redirect_uri.replace("http", "https", 1)
+
     request_uri = client.prepare_request_uri(
         authorization_endpoint,
-        redirect_uri=request.base_url.replace("http", "https", 1) + "/callback",
+        redirect_uri=redirect_uri + "/callback",
         scope=["openid", "email", "profile"],
     )
+
     return redirect(request_uri)
 
 @app.route("/login/callback")
@@ -83,12 +88,21 @@ def callback():
     google_provider_cfg = get_google_provider_cfg()
     token_endpoint = google_provider_cfg["token_endpoint"]
     
+    authorization_response = request.url
+    if authorization_response.startswith("http:"):
+        authorization_response = authorization_response.replace("http", "https", 1)
+
+    redirect_url = request.base_url
+    if redirect_url.startswith("http:"):
+        redirect_url = redirect_url.replace("http", "https", 1)
+
     token_url, headers, body = client.prepare_token_request(
         token_endpoint,
-        authorization_response=request.url.replace("http", "https", 1),
-        redirect_url=request.base_url.replace("http", "https", 1),
+        authorization_response=authorization_response,
+        redirect_url=redirect_url,
         code=code
     )
+
     token_response = requests.post(
         token_url,
         headers=headers,
