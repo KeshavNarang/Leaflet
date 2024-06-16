@@ -9,24 +9,33 @@
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
 
-<body class="p-4">
+<body class="bg-gray-100 min-h-screen flex items-center justify-center">
 
-    <h2 class="text-2xl font-bold mb-4">Which city do you want to see events for?</h2>
+    <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-lg">
+        <h2 class="text-3xl font-bold mb-6 text-center text-blue-600">Which city do you want to see events for?</h2>
 
-    <form method="post" class="max-w-md mx-auto">
-        {{ form.hidden_tag() }}
-        <div class="mb-4">
-            <label><input type="checkbox" id="select_all" class="mr-2"> Select All</label>
-        </div>
-        {% for subfield in form.city %}
-        <div class="mb-2">
-            {{ subfield(class='form-checkbox') }}
-            {{ subfield.label(class='ml-2') }}
-        </div>
-        {% endfor %}
-        <input type="submit" value="Submit"
-            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-    </form>
+        <form method="post" class="space-y-6">
+            {{ form.hidden_tag() }}
+            <div>
+                <div class="flex items-center mb-2">
+                    <input type="checkbox" id="select_all" class="form-checkbox text-blue-500 mr-2">
+                    <label for="select_all" class="text-gray-700">Select All</label>
+                </div>
+                <div class="grid grid-cols-2 gap-2">
+                    {% for subfield in form.city %}
+                    <label class="inline-flex items-center">
+                        {{ subfield(class='form-checkbox text-blue-500') }}
+                        <span class="ml-2">{{ subfield.label.text }}</span>
+                    </label>
+                    {% endfor %}
+                </div>
+            </div>
+            <div>
+                <input type="submit" value="Submit"
+                    class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+            </div>
+        </form>
+    </div>
 
     <script>
         // Function to update Select All checkbox based on individual checkboxes
