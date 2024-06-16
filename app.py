@@ -100,12 +100,27 @@ def callback():
         data=body,
         auth=(GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET),
     )
-
+    print("103")
+    print(token_response)
     client.parse_request_body_response(json.dumps(token_response.json()))
+    print("106")
 
     userinfo_endpoint = google_provider_cfg["userinfo_endpoint"]
+
+    print("110")
+
     uri, headers, body = client.add_token(userinfo_endpoint)
+
+    print("114")
+    print(uri)
+    print(headers)
+    print(body)
+
+
     userinfo_response = requests.get(uri, headers=headers, data=body)
+
+    print("122")
+    print(userinfo_response)
 
     if userinfo_response.json().get("email_verified"):
         unique_id = userinfo_response.json()["sub"]
