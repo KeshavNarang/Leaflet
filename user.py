@@ -77,7 +77,7 @@ class Opportunity:
     
     @staticmethod
     def get_all():
-        conn = sqlite3.connect('database.db')
+        conn = get_db_connection()
         c = conn.cursor()
         c.execute("SELECT title, time_commitment, description, cities FROM opportunities")
         opportunities = c.fetchall()
@@ -97,7 +97,7 @@ class Opportunity:
         user_cities_with_wildcard = ['%{}%'.format(city) for city in user_cities]
 
         # Execute the query
-        conn = sqlite3.connect('database.db')  # Connect to your database
+        conn = get_db_connection()
         cursor = conn.cursor()
         cursor.execute(query, user_cities_with_wildcard)
         opportunities = cursor.fetchall()
