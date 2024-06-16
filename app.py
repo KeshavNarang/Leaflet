@@ -83,15 +83,13 @@ def callback():
     google_provider_cfg = get_google_provider_cfg()
     token_endpoint = google_provider_cfg["token_endpoint"]
 
-    newurl=request.base_url
-    newurl=newurl.replace("http", "https", 1)
-
-    print(newurl)
+    print(request.base_url.replace("http", "https", 1))
+    print(request.url.replace("http", "https", 1))
     try:
         token_url, headers, body = client.prepare_token_request(
             token_endpoint,
-            authorization_response=request.url,
-            redirect_url=newurl,
+            authorization_response=request.url.replace("http", "https", 1),
+            redirect_url=request.base_url.replace("http", "https", 1),
             code=code
         )
         token_response = requests.post(
