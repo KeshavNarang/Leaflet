@@ -1,7 +1,11 @@
 import sqlite3
 
-def init_db():
-    conn = sqlite3.connect('database.db')
+def init_db(IS_PROD):
+    if IS_PROD:
+        # Volume at /var/lib/sqlite3db/data
+        conn = sqlite3.connect('/var/lib/sqlite3db/data/database.db')
+    else:   
+        conn = sqlite3.connect('database.db')
     c = conn.cursor()
     c.execute('''
         CREATE TABLE IF NOT EXISTS user (
@@ -23,5 +27,5 @@ def init_db():
     conn.commit()
     conn.close()
 
-def init_db_command():
-    init_db()
+def init_db_command(IS_PROD):
+    init_db(IS_PROD)
