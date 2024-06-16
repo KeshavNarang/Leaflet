@@ -11,6 +11,8 @@ from db import init_db_command
 from user import User, Opportunity
 from config import ADMIN_EMAILS
 
+IS_PROD=False
+
 # Configuration
 GOOGLE_CLIENT_ID = os.environ.get("GOOGLE_CLIENT_ID")
 GOOGLE_CLIENT_SECRET = os.environ.get("GOOGLE_CLIENT_SECRET")
@@ -26,7 +28,7 @@ login_manager.init_app(app)
 
 # Naive database setup
 try:
-    init_db_command()
+    init_db_command(IS_PROD)
 except sqlite3.OperationalError:
     pass
 
@@ -178,8 +180,8 @@ def logout():
     return redirect(url_for("index"))
 
 if __name__ == "__main__":
-    # For Production:
-    app.run(port=os.getenv("PORT", default=5000), debug=True)
-
-    # For Local:
-    # app.run(ssl_context="adhoc", port=os.getenv("PORT", default=5000), debug=True)
+    if IS_PROD:
+        app.run(port=os.getenv("PORT", default=5000), debug=True)
+    else:
+        # For Local:
+        app.run(ssl_context="adhoc", port=os.getenv("PORT", default=5000), debug=True)
