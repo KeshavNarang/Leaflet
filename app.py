@@ -87,19 +87,22 @@ def callback():
     newurl=newurl.replace("http", "https", 1)
 
     print(newurl)
+    try:
+        token_url, headers, body = client.prepare_token_request(
+            token_endpoint,
+            authorization_response=request.url,
+            redirect_url=newurl,
+            code=code
+        )
+        token_response = requests.post(
+            token_url,
+            headers=headers,
+            data=body,
+            auth=(GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET),
+        )
+    except Exception as e:
+        return render_template_string(f"<div>{e}<div>")
 
-    token_url, headers, body = client.prepare_token_request(
-        token_endpoint,
-        authorization_response=request.url,
-        redirect_url=newurl,
-        code=code
-    )
-    token_response = requests.post(
-        token_url,
-        headers=headers,
-        data=body,
-        auth=(GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET),
-    )
     print("103")
     print(token_response)
     client.parse_request_body_response(json.dumps(token_response.json()))
