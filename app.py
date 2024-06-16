@@ -61,6 +61,7 @@ def login():
     google_provider_cfg = get_google_provider_cfg()
     authorization_endpoint = google_provider_cfg["authorization_endpoint"]
 
+    print(authorization_endpoint)
     print(request.base_url)
 
     request_uri = client.prepare_request_uri(
@@ -72,6 +73,7 @@ def login():
 
 @app.route("/login/callback")
 def callback():
+    print("HERE")
     code = request.args.get("code")
     google_provider_cfg = get_google_provider_cfg()
     token_endpoint = google_provider_cfg["token_endpoint"]
@@ -180,6 +182,6 @@ def logout():
 
 if __name__ == "__main__":
     # app.run(port=os.getenv("PORT", default=5000))
-    app.run(ssl_context="adhoc", port=os.getenv("PORT", default=5000), debug=True)
+    app.run(port=os.getenv("PORT", default=5000), debug=True)
     #ssl_context="adhoc"
     #port=os.getenv("PORT", default=5000)
