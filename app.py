@@ -49,18 +49,7 @@ def load_user(user_id):
 
 @app.route("/")
 def index():
-    if current_user.is_authenticated:
-        city = current_user.city or "Palo Alto"
-        admin_buttons = '' if current_user.email not in ADMIN_EMAILS else '<a class="button" href="/create_opportunity">Create Opportunity</a>'
-        return (
-            f"<p>Hello, {current_user.name}! You're logged in! Email: {current_user.email}</p>"
-            f"<div><p>City: {city}</p></div>"
-            f'<a class="button" href="/logout">Logout</a> | '
-            f'<a class="button" href="/change_city">Change City</a> | '
-            f'{admin_buttons}'
-        )
-    else:
-        return '<a class="button" href="/login">Google Login</a>'
+    return render_template("index.html")
 
 def get_google_provider_cfg():
     return requests.get(GOOGLE_DISCOVERY_URL).json()

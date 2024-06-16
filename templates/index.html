@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-gray-100 min-h-screen flex items-center justify-center">
+    <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-lg text-center">
+        {% if current_user.is_authenticated %}
+            <p class="text-xl mb-4">Hello, {{ current_user.name }}! You're logged in! <br> Email: {{ current_user.email }}</p>
+            <div class="mb-4">
+                <p class="text-lg">City: {{ current_user.city or "Palo Alto" }}</p>
+            </div>
+            <div class="space-x-4">
+                <a class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" href="{{ url_for('logout') }}">Logout</a>
+                <a class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" href="{{ url_for('change_city') }}">Change City</a>
+                {% if current_user.email in ADMIN_EMAILS %}
+                    <a class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" href="{{ url_for('create_opportunity') }}">Create Opportunity</a>
+                {% endif %}
+            </div>
+        {% else %}
+            <a class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" href="{{ url_for('login') }}">Google Login</a>
+        {% endif %}
+    </div>
+</body>
+
+</html>
