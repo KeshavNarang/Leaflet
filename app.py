@@ -10,6 +10,7 @@ from flask_wtf import FlaskForm
 from db import init_db_command
 from user import User, Opportunity
 from config import ADMIN_EMAILS
+from flask import g 
 
 IS_PROD=os.environ.get("IS_PROD") or False
 
@@ -47,9 +48,16 @@ client = WebApplicationClient(GOOGLE_CLIENT_ID)
 def load_user(user_id):
     return User.get(user_id)
 
+@app.before_request
+def before_request():
+    g.user = current_user
+
 @app.route("/")
 def index():
-    opportunities = Opportunity.get_all()  # Fetch all opportunities from the database
+    opportunities = []
+    if current_user.is_authenticated:
+        user_cities = [city.strip() for city in current_user.city.split(',')] if current_user.city else []
+        opportunities = Opportunity.get_opportunities_for_user_cities(user_cities)
     return render_template("index.html", opportunities=opportunities, ADMIN_EMAILS=ADMIN_EMAILS)
 
 def get_google_provider_cfg():

@@ -83,3 +83,24 @@ class Opportunity:
         opportunities = c.fetchall()
         conn.close()
         return opportunities
+    
+    @staticmethod
+    def get_opportunities_for_user_cities(user_cities):
+        if not user_cities:
+            return []  # If user has no cities selected, return empty list
+
+        # Prepare the SQL query to fetch opportunities
+        query = "SELECT * FROM opportunities WHERE "
+        query += " OR ".join(["cities LIKE ?" for _ in range(len(user_cities))])
+
+        # Concatenate '%' to match any city
+        user_cities_with_wildcard = ['%{}%'.format(city) for city in user_cities]
+
+        # Execute the query
+        conn = sqlite3.connect('database.db')  # Connect to your database
+        cursor = conn.cursor()
+        cursor.execute(query, user_cities_with_wildcard)
+        opportunities = cursor.fetchall()
+        conn.close()
+
+        return opportunities
