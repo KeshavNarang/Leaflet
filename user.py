@@ -1,8 +1,23 @@
 from flask_login import UserMixin
 import sqlite3
+import os
+
+IS_PROD=os.environ.get("IS_PROD") or False
+
+# Validate
+if type(IS_PROD)!=bool:
+    if IS_PROD.lower()=="true":
+        IS_PROD = True
+    else:
+        IS_PROD = False
+
 
 def get_db_connection():
-    conn = sqlite3.connect('database.db')
+    if IS_PROD:
+        # Volume at /var/lib/sqlite3db/data
+        conn = sqlite3.connect('/var/lib/sqlite3db/data/database.db')
+    else:   
+        conn = sqlite3.connect('database.db')
     conn.row_factory = sqlite3.Row
     return conn
 
