@@ -61,14 +61,14 @@ def login():
     google_provider_cfg = get_google_provider_cfg()
     authorization_endpoint = google_provider_cfg["authorization_endpoint"]
 
-    print(authorization_endpoint)
-    print(request.base_url)
+    # print(authorization_endpoint)
+    # print(request.base_url)
 
     newurl=request.base_url
     newurl=newurl.replace("http", "https", 1)
 
     print(newurl)
-    
+
     request_uri = client.prepare_request_uri(
         authorization_endpoint,
         redirect_uri=newurl + "/callback",
@@ -83,10 +83,15 @@ def callback():
     google_provider_cfg = get_google_provider_cfg()
     token_endpoint = google_provider_cfg["token_endpoint"]
 
+    newurl=request.base_url
+    newurl=newurl.replace("http", "https", 1)
+
+    print(newurl)
+
     token_url, headers, body = client.prepare_token_request(
         token_endpoint,
         authorization_response=request.url,
-        redirect_url=request.base_url,
+        redirect_url=newurl,
         code=code
     )
     token_response = requests.post(
