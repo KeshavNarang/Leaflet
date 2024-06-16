@@ -11,7 +11,14 @@ from db import init_db_command
 from user import User, Opportunity
 from config import ADMIN_EMAILS
 
-IS_PROD=False
+IS_PROD=os.environ.get("IS_PROD") or False
+
+# Validate
+if type(IS_PROD)!=bool:
+    if IS_PROD.lower()=="true":
+        IS_PROD = True
+    else:
+        IS_PROD = False
 
 # Configuration
 GOOGLE_CLIENT_ID = os.environ.get("GOOGLE_CLIENT_ID")
