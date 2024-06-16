@@ -178,6 +178,6 @@ def logout():
 
 if __name__ == "__main__":
     # app.run(port=os.getenv("PORT", default=5000))
-    app.run(ssl_context="adhoc", port=os.getenv("PORT", default=5000))
+    app.run(ssl_context="adhoc", port=os.getenv("PORT", default=5000), debug=True)
     #ssl_context="adhoc"
     #port=os.getenv("PORT", default=5000)
