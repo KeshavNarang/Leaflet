@@ -35,10 +35,7 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 
 # Naive database setup
-try:
-    init_db_command(IS_PROD)
-except sqlite3.OperationalError:
-    pass
+init_db_command(IS_PROD)
 
 # OAuth 2 client setup
 client = WebApplicationClient(GOOGLE_CLIENT_ID)
