@@ -2,7 +2,7 @@ import json
 import os
 import sqlite3
 import requests
-from flask import Flask, redirect, request, url_for, render_template_string, render_template
+from flask import Flask, redirect, request, url_for, render_template_string, render_template, g
 from flask_login import LoginManager, current_user, login_required, login_user, logout_user
 from oauthlib.oauth2 import WebApplicationClient
 from wtforms import Form, RadioField, StringField, SelectField, SelectMultipleField, widgets, validators
@@ -10,7 +10,6 @@ from flask_wtf import FlaskForm
 from db import init_db_command
 from user import User, Opportunity
 from config import ADMIN_EMAILS
-from flask import g 
 
 IS_PROD=os.environ.get("IS_PROD") or False
 
@@ -121,7 +120,7 @@ def callback():
     
     user = User.get(unique_id)
     if not user:
-        default_city = "All" if users_email in ADMIN_EMAILS else None
+        default_city = "Palo Alto" if users_email in ADMIN_EMAILS else None
         User.create(unique_id, users_name, users_email, default_city)
         user = User(unique_id, users_name, users_email, default_city)
     

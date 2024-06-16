@@ -11,9 +11,9 @@
 <body class="bg-gray-100 min-h-screen flex items-center justify-center">
     <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-lg text-center">
         {% if current_user.is_authenticated %}
-            <p class="text-xl mb-4">Hello, {{ current_user.name }}! You're logged in! <br> Email: {{ current_user.email }}</p>
+            <p class="text-xl mb-4">Hello, {{ current_user.name }}! <br> Email: {{ current_user.email }}</p>
             <div class="mb-4">
-                <p class="text-lg">City: {{ current_user.city or "Palo Alto" }}</p>
+                <p class="text-lg">Cities: {{ current_user.city or "Palo Alto" }}</p>
             </div>
             
             <div class="mt-8">
