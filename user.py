@@ -74,3 +74,12 @@ class Opportunity:
         )
         conn.commit()
         conn.close()
+    
+    @staticmethod
+    def get_all():
+        conn = sqlite3.connect('database.db')
+        c = conn.cursor()
+        c.execute("SELECT title, time_commitment, description, cities FROM opportunities")
+        opportunities = c.fetchall()
+        conn.close()
+        return opportunities

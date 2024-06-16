@@ -49,7 +49,8 @@ def load_user(user_id):
 
 @app.route("/")
 def index():
-    return render_template("index.html")
+    opportunities = Opportunity.get_all()  # Fetch all opportunities from the database
+    return render_template("index.html", opportunities=opportunities, ADMIN_EMAILS=ADMIN_EMAILS)
 
 def get_google_provider_cfg():
     return requests.get(GOOGLE_DISCOVERY_URL).json()
