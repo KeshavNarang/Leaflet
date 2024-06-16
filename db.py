@@ -4,6 +4,7 @@ def init_db(IS_PROD):
     if IS_PROD:
         # Volume at /var/lib/sqlite3db/data
         conn = sqlite3.connect('/var/lib/sqlite3db/data/database.db')
+        print("starting")
     else:   
         conn = sqlite3.connect('database.db')
     c = conn.cursor()
