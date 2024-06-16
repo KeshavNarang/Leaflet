@@ -177,6 +177,7 @@ def logout():
     return redirect(url_for("index"))
 
 if __name__ == "__main__":
-    app.run(port=os.getenv("PORT", default=5000))
+    # app.run(port=os.getenv("PORT", default=5000))
+    app.run(ssl_context="adhoc", port=os.getenv("PORT", default=5000))
     #ssl_context="adhoc"
     #port=os.getenv("PORT", default=5000)
