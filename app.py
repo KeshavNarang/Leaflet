@@ -60,68 +60,39 @@ def get_google_provider_cfg():
 def login():
     google_provider_cfg = get_google_provider_cfg()
     authorization_endpoint = google_provider_cfg["authorization_endpoint"]
-
-    # print(authorization_endpoint)
-    # print(request.base_url)
-
-    newurl=request.base_url
-    newurl=newurl.replace("http", "https", 1)
-
-    print(newurl)
-
+    
     request_uri = client.prepare_request_uri(
         authorization_endpoint,
-        redirect_uri=newurl + "/callback",
+        redirect_uri=request.base_url.replace("http", "https", 1) + "/callback",
         scope=["openid", "email", "profile"],
     )
     return redirect(request_uri)
 
 @app.route("/login/callback")
 def callback():
-    print("HERE")
     code = request.args.get("code")
     google_provider_cfg = get_google_provider_cfg()
     token_endpoint = google_provider_cfg["token_endpoint"]
+    
+    token_url, headers, body = client.prepare_token_request(
+        token_endpoint,
+        authorization_response=request.url.replace("http", "https", 1),
+        redirect_url=request.base_url.replace("http", "https", 1),
+        code=code
+    )
+    token_response = requests.post(
+        token_url,
+        headers=headers,
+        data=body,
+        auth=(GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET),
+    )
 
-    print(request.base_url.replace("http", "https", 1))
-    print(request.url.replace("http", "https", 1))
-    try:
-        token_url, headers, body = client.prepare_token_request(
-            token_endpoint,
-            authorization_response=request.url.replace("http", "https", 1),
-            redirect_url=request.base_url.replace("http", "https", 1),
-            code=code
-        )
-        token_response = requests.post(
-            token_url,
-            headers=headers,
-            data=body,
-            auth=(GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET),
-        )
-    except Exception as e:
-        return render_template_string(f"<div>{e}<div>")
-
-    print("103")
-    print(token_response)
     client.parse_request_body_response(json.dumps(token_response.json()))
-    print("106")
 
     userinfo_endpoint = google_provider_cfg["userinfo_endpoint"]
 
-    print("110")
-
     uri, headers, body = client.add_token(userinfo_endpoint)
-
-    print("114")
-    print(uri)
-    print(headers)
-    print(body)
-
-
     userinfo_response = requests.get(uri, headers=headers, data=body)
-
-    print("122")
-    print(userinfo_response)
 
     if userinfo_response.json().get("email_verified"):
         unique_id = userinfo_response.json()["sub"]
@@ -207,7 +178,8 @@ def logout():
     return redirect(url_for("index"))
 
 if __name__ == "__main__":
-    # app.run(port=os.getenv("PORT", default=5000))
+    # For Production:
     app.run(port=os.getenv("PORT", default=5000), debug=True)
-    #ssl_context="adhoc"
-    #port=os.getenv("PORT", default=5000)
+
+    # For Local:
+    # app.run(ssl_context="adhoc", port=os.getenv("PORT", default=5000), debug=True)
