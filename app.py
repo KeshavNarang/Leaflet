@@ -132,6 +132,13 @@ def generate_city_form():
 def render_city_template(form):
     return render_template("city_form.html", form=form)
 
+@app.route("/status",methods=["GET"])
+def show_status():
+    if IS_PROD:
+        return render_template_string("<div>Status: Production</div>")
+    else:
+        return render_template_string("<div>Status: Local</div>")
+
 @app.route("/collect_city", methods=["GET", "POST"])
 @login_required
 def collect_city():
