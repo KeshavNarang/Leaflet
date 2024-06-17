@@ -65,12 +65,12 @@ class User(UserMixin):
 
 class Opportunity:
     @staticmethod
-    def create(title, time_commitment, description, cities):
+    def create(title, time_commitment, description, cities, due_date):
         conn = get_db_connection()
         conn.execute(
-            "INSERT INTO opportunities (title, time_commitment, description, cities) "
-            "VALUES (?, ?, ?, ?)",
-            (title, time_commitment, description, cities),
+            "INSERT INTO opportunities (title, time_commitment, description, cities, due_date) "
+            "VALUES (?, ?, ?, ?, ?)",
+            (title, time_commitment, description, cities, due_date),
         )
         conn.commit()
         conn.close()
@@ -79,7 +79,7 @@ class Opportunity:
     def get_all():
         conn = get_db_connection()
         c = conn.cursor()
-        c.execute("SELECT title, time_commitment, description, cities FROM opportunities")
+        c.execute("SELECT title, time_commitment, description, cities, due_date FROM opportunities")
         opportunities = c.fetchall()
         conn.close()
         return opportunities
@@ -141,5 +141,15 @@ class Opportunity:
             conn.execute("UPDATE opportunities SET hidden = 1 WHERE id = ?", (opportunity_id,))
         else:
             conn.execute("UPDATE opportunities SET hidden = 0 WHERE id = ?", (opportunity_id,))
+        conn.commit()
+        conn.close()
+    
+    @staticmethod
+    def update(opportunity_id, title, time_commitment, description, cities, due_date):
+        conn = get_db_connection()
+        conn.execute(
+            "UPDATE opportunities SET title = ?, time_commitment = ?, description = ?, cities = ?, due_date = ? WHERE id = ?",
+            (title, time_commitment, description, cities, due_date, opportunity_id)
+        )
         conn.commit()
         conn.close()

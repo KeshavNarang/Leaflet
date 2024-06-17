@@ -2,7 +2,7 @@ import json
 import os
 import sqlite3
 import requests
-from flask import Flask, redirect, request, url_for, render_template_string, render_template, g
+from flask import Flask, redirect, request, url_for, render_template_string, render_template, abort, g
 from flask_login import LoginManager, current_user, login_required, login_user, logout_user
 from oauthlib.oauth2 import WebApplicationClient
 from wtforms import Form, RadioField, StringField, SelectField, SelectMultipleField, widgets, validators
@@ -55,7 +55,7 @@ def index():
         user_cities = [city.strip() for city in current_user.city.split(',')] if current_user.city else []
         is_admin = current_user.email in ADMIN_EMAILS
         opportunities = Opportunity.get_opportunities_for_user_cities(user_cities, is_admin)
-    return render_template("index.html", opportunities=opportunities, ADMIN_EMAILS=ADMIN_EMAILS)
+    return render_template("index.html", opportunities=opportunities, ADMIN_EMAILS=ADMIN_EMAILS, len=len)
 
 def get_google_provider_cfg():
     return requests.get(GOOGLE_DISCOVERY_URL).json()
@@ -172,6 +172,51 @@ def change_city():
 
     return render_city_template(form)
 
+@app.route("/opportunity/<int:opportunity_id>")
+def view_opportunity(opportunity_id):
+    opportunity = Opportunity.get_by_id(opportunity_id)
+    if not opportunity:
+        abort(404)
+    
+    return render_template("view_opportunity.html", opportunity=opportunity)
+
+@app.route("/opportunity/<int:opportunity_id>/mark_done")
+@login_required
+def mark_opportunity_done(opportunity_id):
+    # Here you would implement marking the opportunity as done for the current user
+    # For simplicity, let's just redirect back to index for now
+    return redirect(url_for("index"))
+
+@app.route("/opportunity/<int:opportunity_id>/edit", methods=["GET", "POST"])
+@login_required
+def edit_opportunity(opportunity_id):
+    if current_user.email not in ADMIN_EMAILS:
+        return redirect(url_for("index"))
+
+    opportunity = Opportunity.get_by_id(opportunity_id)
+    if not opportunity:
+        abort(404)
+
+    class EditOpportunityForm(FlaskForm):
+        title = StringField('Title', [validators.InputRequired()], default=opportunity['title'])
+        time_commitment = RadioField('Time Commitment', choices=[("Short", "Short"), ("Medium", "Medium"), ("Long", "Long")], validators=[validators.InputRequired()], default=opportunity['time_commitment'])
+        description = StringField('Description', [validators.InputRequired()], default=opportunity['description'])
+        cities = SelectMultipleField('City', choices=[("Palo Alto", "Palo Alto"), ("Fremont", "Fremont"), ("San Jose", "San Jose"), ("Burlingame", "Burlingame")], option_widget=widgets.CheckboxInput(), coerce=str, default=opportunity['cities'].split(', '))
+        due_date = StringField('Due Date', [validators.InputRequired()], default=opportunity['due_date'])
+
+    form = EditOpportunityForm()
+    if form.validate_on_submit():
+        title = form.title.data
+        time_commitment = form.time_commitment.data
+        description = form.description.data
+        cities = ', '.join(form.cities.data)
+        due_date = form.due_date.data
+        # Update the opportunity
+        Opportunity.update(opportunity_id, title, time_commitment, description, cities, due_date)
+        return redirect(url_for("index"))
+
+    return render_template("edit_opportunity.html", form=form)
+
 @app.route("/create_opportunity", methods=["GET", "POST"])
 @login_required
 def create_opportunity():
@@ -183,6 +228,7 @@ def create_opportunity():
         time_commitment = RadioField('Time Commitment', choices=[("Short", "Short"), ("Medium", "Medium"), ("Long", "Long")], validators=[validators.InputRequired()])
         description = StringField('Description', [validators.InputRequired()])
         cities = SelectMultipleField('City', choices=[("Palo Alto", "Palo Alto"), ("Fremont", "Fremont"), ("San Jose", "San Jose"), ("Burlingame", "Burlingame")], option_widget=widgets.CheckboxInput(), coerce=str)
+        due_date = StringField('Due Date', [validators.InputRequired()]) 
 
     form = OpportunityForm()
     if form.validate_on_submit():
@@ -190,7 +236,8 @@ def create_opportunity():
         time_commitment = form.time_commitment.data
         description = form.description.data
         cities = ', '.join(form.cities.data)
-        Opportunity.create(title, time_commitment, description, cities)
+        due_date = form.due_date.data
+        Opportunity.create(title, time_commitment, description, cities, due_date)
         return redirect(url_for("index"))
 
     return render_template("create_opportunity.html", form=form)

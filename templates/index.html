@@ -6,10 +6,38 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    
+    <!-- <style>
+        /* CSS for animation */
+        @keyframes fadeInFromLeft {
+            0% {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .title-animation {
+            text-align: center; /* Center align the text */
+        }
+
+        .title-animation span {
+            display: inline-block;
+            opacity: 0;
+            animation: fadeInFromLeft 0.5s ease-in-out forwards;
+            letter-spacing: -0.3em; /* Adjust the spacing value as needed */
+        }
+    </style> -->
 </head>
 
 <body class="bg-gray-100 min-h-screen flex items-center justify-center">
-    <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-lg text-center">
+    <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-3xl text-center"> <!-- Increased box size -->
+        <h1 class="text-4xl font-bold mb-8 text-blue-600 title-animation"> <!-- Larger font size and animation -->
+            Fern
+        </h1>
         {% if current_user.is_authenticated %}
             <p class="text-xl mb-4">Hello, {{ current_user.name }}! <br> Email: {{ current_user.email }}</p>
             <div class="mb-4">
@@ -22,9 +50,9 @@
                     <thead>
                         <tr>
                             <th class="py-2">Title</th>
-                            <th class="py-2">Time Commitment</th>
+                            <th class="py-2">Time</th>
                             <th class="py-2">Description</th>
-                            <th class="py-2">Cities</th>
+                            <th class="py-2">Due Date</th> 
                             {% if current_user.email in ADMIN_EMAILS %}
                                 <th class="py-2">Actions</th>
                             {% endif %}
@@ -34,15 +62,20 @@
                         {% for opportunity in opportunities %}
                             {% if not opportunity['hidden'] or (opportunity['hidden'] and current_user.email in ADMIN_EMAILS) %}
                                 <tr class="{{ 'bg-gray-200' if opportunity['hidden'] and current_user.email in ADMIN_EMAILS else '' }}">
-                                    <td class="border px-4 py-2">{{ opportunity[0] }}</td>
                                     <td class="border px-4 py-2">{{ opportunity[1] }}</td>
                                     <td class="border px-4 py-2">{{ opportunity[2] }}</td>
-                                    <td class="border px-4 py-2">{{ opportunity[3] }}</td>
+                                    <td class="border px-4 py-2">
+                                        <a href="{{ url_for('view_opportunity', opportunity_id=opportunity['id']) }}">{{ opportunity[3][:10] }}{{ '...' if len(opportunity[3]) > 10 else '' }}</a>
+                                    </td>
+                                    <td class="border px-4 py-2">{{ opportunity[5] }}</td>                
                                     {% if current_user.email in ADMIN_EMAILS %}
                                         <td class="border px-4 py-2">
+                                            <a href="{{ url_for('edit_opportunity', opportunity_id=opportunity['id']) }}">Edit</a>
+                                            <br>
                                             <a href="{{ url_for('toggle_opportunity', opportunity_id=opportunity['id']) }}">
                                                 {{ 'Show' if opportunity['hidden'] else 'Hide' }}
-                                            </a>
+                                            </a> 
+                                            <br>
                                             <a href="{{ url_for('remove_opportunity', opportunity_id=opportunity['id']) }}">Remove</a>
                                         </td>
                                     {% endif %}
@@ -61,7 +94,7 @@
                 {% endif %}
             </div>
         {% else %}
-            <a class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" href="{{ url_for('login') }}">Google Login</a>
+            <a class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" href="{{ url_for('login') }}">Login with Gmail</a>
         {% endif %}
     </div>
 </body>

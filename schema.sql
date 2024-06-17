@@ -11,5 +11,6 @@ CREATE TABLE IF NOT EXISTS opportunities (
   time_commitment TEXT NOT NULL,
   description TEXT NOT NULL,
   cities TEXT NOT NULL,
+  due_date TEXT,
   hidden INTEGER DEFAULT 0 
 );

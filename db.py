@@ -23,6 +23,7 @@ def init_db(IS_PROD):
             time_commitment TEXT NOT NULL,
             description TEXT NOT NULL,
             cities TEXT NOT NULL,
+            due_date TEXT,
             hidden INTEGER DEFAULT 0
         )
     ''')
