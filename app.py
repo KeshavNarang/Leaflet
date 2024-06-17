@@ -53,7 +53,8 @@ def index():
     opportunities = []
     if current_user.is_authenticated:
         user_cities = [city.strip() for city in current_user.city.split(',')] if current_user.city else []
-        opportunities = Opportunity.get_opportunities_for_user_cities(user_cities)
+        is_admin = current_user.email in ADMIN_EMAILS
+        opportunities = Opportunity.get_opportunities_for_user_cities(user_cities, is_admin)
     return render_template("index.html", opportunities=opportunities, ADMIN_EMAILS=ADMIN_EMAILS)
 
 def get_google_provider_cfg():
@@ -194,6 +195,36 @@ def create_opportunity():
 
     return render_template("create_opportunity.html", form=form)
 
+@app.route("/hide_opportunity/<int:opportunity_id>")
+@login_required
+def hide_opportunity(opportunity_id):
+    if current_user.email not in ADMIN_EMAILS:
+        return redirect(url_for("index"))
+    Opportunity.hide(opportunity_id)
+    return redirect(url_for("index"))
+
+@app.route("/remove_opportunity/<int:opportunity_id>")
+@login_required
+def remove_opportunity(opportunity_id):
+    if current_user.email not in ADMIN_EMAILS:
+        return redirect(url_for("index"))
+    Opportunity.remove(opportunity_id)
+    return redirect(url_for("index"))
+
+@app.route("/toggle_opportunity/<int:opportunity_id>")
+@login_required
+def toggle_opportunity(opportunity_id):
+    if current_user.email not in ADMIN_EMAILS:
+        return redirect(url_for("index"))
+    
+    # Determine current hidden status
+    opportunity = Opportunity.get_by_id(opportunity_id)
+    if opportunity is None:
+        return redirect(url_for("index"))
+
+    hidden = opportunity['hidden'] if opportunity else None
+    Opportunity.toggle_visibility(opportunity_id, hide=not hidden)
+    return redirect(url_for("index"))
 
 @app.route("/logout")
 @login_required

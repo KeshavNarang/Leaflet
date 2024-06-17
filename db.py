@@ -22,7 +22,8 @@ def init_db(IS_PROD):
             title TEXT NOT NULL,
             time_commitment TEXT NOT NULL,
             description TEXT NOT NULL,
-            cities TEXT NOT NULL
+            cities TEXT NOT NULL,
+            hidden INTEGER DEFAULT 0
         )
     ''')
     conn.commit()

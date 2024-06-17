@@ -85,18 +85,27 @@ class Opportunity:
         return opportunities
     
     @staticmethod
-    def get_opportunities_for_user_cities(user_cities):
+    def get_by_id(opportunity_id):
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM opportunities WHERE id = ?", (opportunity_id,))
+        opportunity = cursor.fetchone()
+        conn.close()
+        return opportunity
+        
+    @staticmethod
+    def get_opportunities_for_user_cities(user_cities, is_admin=False):
         if not user_cities:
-            return []  # If user has no cities selected, return empty list
+            return []
 
-        # Prepare the SQL query to fetch opportunities
-        query = "SELECT * FROM opportunities WHERE "
-        query += " OR ".join(["cities LIKE ?" for _ in range(len(user_cities))])
-
-        # Concatenate '%' to match any city
+        query = "SELECT * FROM opportunities WHERE ("
+        query += " OR ".join(["cities LIKE ?" for _ in range(len(user_cities))]) + ")"
+        
         user_cities_with_wildcard = ['%{}%'.format(city) for city in user_cities]
-
-        # Execute the query
+        
+        if not is_admin:
+            query += " AND hidden = 0"
+        
         conn = get_db_connection()
         cursor = conn.cursor()
         cursor.execute(query, user_cities_with_wildcard)
@@ -104,3 +113,33 @@ class Opportunity:
         conn.close()
 
         return opportunities
+
+    @staticmethod
+    def hide(opportunity_id):
+        conn = get_db_connection()
+        conn.execute(
+            "UPDATE opportunities SET hidden = 1 WHERE id = ?",
+            (opportunity_id,)
+        )
+        conn.commit()
+        conn.close()
+
+    @staticmethod
+    def remove(opportunity_id):
+        conn = get_db_connection()
+        conn.execute(
+            "DELETE FROM opportunities WHERE id = ?",
+            (opportunity_id,)
+        )
+        conn.commit()
+        conn.close()
+    
+    @staticmethod
+    def toggle_visibility(opportunity_id, hide=True):
+        conn = get_db_connection()
+        if hide:
+            conn.execute("UPDATE opportunities SET hidden = 1 WHERE id = ?", (opportunity_id,))
+        else:
+            conn.execute("UPDATE opportunities SET hidden = 0 WHERE id = ?", (opportunity_id,))
+        conn.commit()
+        conn.close()

@@ -10,5 +10,6 @@ CREATE TABLE IF NOT EXISTS opportunities (
   title TEXT NOT NULL,
   time_commitment TEXT NOT NULL,
   description TEXT NOT NULL,
-  cities TEXT NOT NULL
+  cities TEXT NOT NULL,
+  hidden INTEGER DEFAULT 0 
 );

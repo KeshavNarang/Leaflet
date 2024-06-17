@@ -25,16 +25,29 @@
                             <th class="py-2">Time Commitment</th>
                             <th class="py-2">Description</th>
                             <th class="py-2">Cities</th>
+                            {% if current_user.email in ADMIN_EMAILS %}
+                                <th class="py-2">Actions</th>
+                            {% endif %}
                         </tr>
                     </thead>
                     <tbody>
                         {% for opportunity in opportunities %}
-                            <tr>
-                                <td class="border px-4 py-2">{{ opportunity[0] }}</td>
-                                <td class="border px-4 py-2">{{ opportunity[1] }}</td>
-                                <td class="border px-4 py-2">{{ opportunity[2] }}</td>
-                                <td class="border px-4 py-2">{{ opportunity[3] }}</td>
-                            </tr>
+                            {% if not opportunity['hidden'] or (opportunity['hidden'] and current_user.email in ADMIN_EMAILS) %}
+                                <tr class="{{ 'bg-gray-200' if opportunity['hidden'] and current_user.email in ADMIN_EMAILS else '' }}">
+                                    <td class="border px-4 py-2">{{ opportunity[0] }}</td>
+                                    <td class="border px-4 py-2">{{ opportunity[1] }}</td>
+                                    <td class="border px-4 py-2">{{ opportunity[2] }}</td>
+                                    <td class="border px-4 py-2">{{ opportunity[3] }}</td>
+                                    {% if current_user.email in ADMIN_EMAILS %}
+                                        <td class="border px-4 py-2">
+                                            <a href="{{ url_for('toggle_opportunity', opportunity_id=opportunity['id']) }}">
+                                                {{ 'Show' if opportunity['hidden'] else 'Hide' }}
+                                            </a>
+                                            <a href="{{ url_for('remove_opportunity', opportunity_id=opportunity['id']) }}">Remove</a>
+                                        </td>
+                                    {% endif %}
+                                </tr>
+                            {% endif %}
                         {% endfor %}
                     </tbody>
                 </table>
