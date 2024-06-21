@@ -55,7 +55,10 @@ def index():
         user_cities = [city.strip() for city in current_user.city.split(',')] if current_user.city else []
         is_admin = current_user.email in ADMIN_EMAILS
         opportunities = Opportunity.get_opportunities_for_user_cities(user_cities, is_admin)
-    return render_template("index.html", opportunities=opportunities, ADMIN_EMAILS=ADMIN_EMAILS, len=len)
+        return render_template("index.html", opportunities=opportunities, ADMIN_EMAILS=ADMIN_EMAILS, len=len)
+
+    else:
+        return render_template("login.html")
 
 def get_google_provider_cfg():
     return requests.get(GOOGLE_DISCOVERY_URL).json()
