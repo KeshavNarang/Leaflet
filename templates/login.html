@@ -5,28 +5,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Home</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-  <style>
-    .title-animation {
-      animation: fadeIn 2s ease-in-out;
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-  </style>
 </head>
 <body class="bg-white min-h-screen flex items-center justify-center p-0 m-0">
-
   <div class="w-full h-full grid grid-cols-1 md:grid-cols-2">
-    <div class="login-section flex flex-col justify-center items-center p-4">
-      <h1 class="text-4xl font-bold mb-4 text-blue-600 title-animation">Fern</h1>
-      <p class="text-lg mb-4 text-center">A platform for public commenting. Share your thoughts and engage with the community.</p>
-      <a class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" href="{{ url_for('login') }}">Login with Gmail</a>
+    <div class="login-section flex flex-col justify-center p-4 md:p-10 max-w-md mx-auto">
+      <h1 class="text-6xl font-bold mb-6 text-blue-600">A Name: And A Short Description</h1>
+      <p class="text-2xl mb-6 text-gray-700">A more detailed subtitle that provides more information about the project, especially for first-time users.</p>
+      <div>
+        <a class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded focus:outline-none focus:shadow-outline text-xl inline-block" href="{{ url_for('login') }}">Login with Gmail</a>
+      </div>
     </div>
-    <div class="image-section flex justify-center items-center p-4">
-      <img src="clickers.jpg" alt="Image" class="w-full h-auto">
+    <div class="image-section flex flex-col justify-center items-center p-4">
+      <img src="{{ url_for('static', filename='clickers.jpg') }}" alt="Public Commenting Image" class="w-full h-auto max-w-md object-contain">
+      <p class="text-sm text-gray-600 mt-2">This will be the image caption and credit.</p>
     </div>
   </div>
-  
 </body>
 </html>
