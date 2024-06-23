@@ -9,15 +9,17 @@
 <body class="bg-white min-h-screen flex items-center justify-center p-0 m-0">
   <div class="w-full h-full grid grid-cols-1 md:grid-cols-2">
     <div class="login-section flex flex-col justify-center p-4 md:p-10 max-w-md mx-auto">
-      <h1 class="text-6xl font-bold mb-6 text-blue-600">A Name: And A Short Description</h1>
-      <p class="text-2xl mb-6 text-gray-700">A more detailed subtitle that provides more information about the project, especially for first-time users.</p>
+      <h1 class="text-6xl font-bold mb-6 text-blue-600">Leaflet: Use Your Voice for Change </h1>
+      <p class="text-2xl mb-6 text-gray-700">Connecting California's youth to local environmental advocacy opportunities and resources.</p>
       <div>
         <a class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded focus:outline-none focus:shadow-outline text-xl inline-block" href="{{ url_for('login') }}">Login with Gmail</a>
       </div>
     </div>
     <div class="image-section flex flex-col justify-center items-center p-4">
-      <img src="{{ url_for('static', filename='clickers.jpg') }}" alt="Public Commenting Image" class="w-full h-auto max-w-md object-contain">
-      <p class="text-sm text-gray-600 mt-2">This will be the image caption and credit.</p>
+      <div class="max-w-md w-full">
+        <img src="{{ url_for('static', filename='clickers.jpg') }}" alt="Public Commenting Image" class="w-full h-auto object-contain">
+        <p class="text-sm text-gray-600 mt-2">A group of teens cleans up 1,000+ pieces of waste around California's Capitol in 3 hours. Leaflet helps you find ways to make a difference. </p>
+      </div>
     </div>
   </div>
 </body>
