@@ -10,30 +10,30 @@
     <p class="text-lg mb-4 mt-1">You are viewing events for the following cities: {{ current_user.city or "Palo Alto" }}</p>
 
     <div class="mt-8">
-      <table class="min-w-full bg-white">
-        <thead>
+      <table class="min-w-full bg-white shadow-md rounded-lg overflow-hidden border border-black">
+        <thead class="bg-blue-600 text-white">
           <tr>
-            <th class="py-2">Title</th>
-            <th class="py-2">Time</th>
-            <th class="py-2">Description</th>
-            <th class="py-2">Due Date</th>
+            <th class="py-3 px-4 text-center border border-black">Title</th>
+            <th class="py-3 px-4 text-center border border-black">Time</th>
+            <th class="py-3 px-4 text-center border border-black">Description</th>
+            <th class="py-3 px-4 text-center border border-black">Due Date</th>
             {% if current_user.email in ADMIN_EMAILS %}
-              <th class="py-2">Actions</th>
+              <th class="py-3 px-4 text-center border border-black">Actions</th>
             {% endif %}
           </tr>
         </thead>
-        <tbody>
+        <tbody class="divide-y divide-gray-200">
           {% for opportunity in opportunities %}
             {% if not opportunity['hidden'] or (opportunity['hidden'] and current_user.email in ADMIN_EMAILS) %}
-              <tr class="{{ 'bg-gray-200' if opportunity['hidden'] and current_user.email in ADMIN_EMAILS else '' }}">
-                <td class="border px-4 py-2">{{ opportunity[1] }}</td>
-                <td class="border px-4 py-2">{{ opportunity[2] }}</td>
-                <td class="border px-4 py-2">
-                  <a class="text-blue-600" href="{{ url_for('view_opportunity', opportunity_id=opportunity['id']) }}" target="_blank">{{ opportunity[3][:10] }}{{ '... (click to read more)' if len(opportunity[3]) > 10 else '' }}</a>
+              <tr class="hover:bg-blue-100">
+                <td class="py-4 px-4 border border-black">{{ opportunity[1] }}</td>
+                <td class="py-4 px-4 border border-black">{{ opportunity[2] }}</td>
+                <td class="py-4 px-4 border border-black">
+                  <a class="text-blue-600" href="{{ url_for('view_opportunity', opportunity_id=opportunity['id']) }}" target="_blank">{{ opportunity[3][:25]}}{{ '... (click to read more)' if len(opportunity[3]) > 10 else '' }}</a>
                 </td>
-                <td class="border px-4 py-2">{{ opportunity[5] }}</td>
+                <td class="py-4 px-4 border border-black">{{ opportunity[5] }}</td>
                 {% if current_user.email in ADMIN_EMAILS %}
-                  <td class="border px-4 py-2">
+                  <td class="py-4 px-4 border border-black">
                     <a class="text-blue-600" href="{{ url_for('edit_opportunity', opportunity_id=opportunity['id']) }}">Edit</a>
                     <br>
                     <a class="text-blue-600" href="{{ url_for('toggle_opportunity', opportunity_id=opportunity['id']) }}">
@@ -51,11 +51,11 @@
     </div>
 
     <div class="space-x-4 mt-8">  
-      <a class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" href="{{ url_for('logout') }}">Logout</a>
-      <a class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" href="{{ url_for('change_city') }}">Change City</a>
       {% if current_user.email in ADMIN_EMAILS %}
         <a class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" href="{{ url_for('create_opportunity') }}">Create Opportunity</a>
       {% endif %}
+      <a class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" href="{{ url_for('change_city') }}">Change City</a>
+      <a class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" href="{{ url_for('logout') }}">Logout</a>
     </div>
   {% else %}
     <a class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" href="{{ url_for('login') }}">Login with Gmail</a>
