@@ -3,13 +3,11 @@
 {% block title %}Home{% endblock %}
 
 {% block content %}
-  <h1 class="text-4xl font-bold mb-8 text-blue-600 title-animation">Fern</h1>
+  <h1 class="text-5xl font-bold mb-8 text-blue-600 title-animation">Leaflet</h1>
 
   {% if current_user.is_authenticated %}
-    <p class="text-xl mb-4">Hello, {{ current_user.name }}! <br> Email: {{ current_user.email }}</p>
-    <div class="mb-4">
-      <p class="text-lg">Cities: {{ current_user.city or "Palo Alto" }}</p>
-    </div>
+    <p class="text-xl mb-1">Hello, {{ current_user.name }} ({{ current_user.email }})</p>
+    <p class="text-lg mb-4 mt-1">You are viewing events for the following cities: {{ current_user.city or "Palo Alto" }}</p>
 
     <div class="mt-8">
       <table class="min-w-full bg-white">

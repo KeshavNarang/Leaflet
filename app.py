@@ -82,6 +82,14 @@ def login():
 @app.route("/login/callback")
 def callback():
     code = request.args.get("code")
+    error = request.args.get("error")
+    
+    if error:
+        return redirect(url_for("login"))  # Redirect back to login if there was an error
+    
+    if not code:
+        return redirect(url_for("login"))  # Redirect back to login if code is None
+        
     google_provider_cfg = get_google_provider_cfg()
     token_endpoint = google_provider_cfg["token_endpoint"]
     
