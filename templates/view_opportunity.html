@@ -10,15 +10,17 @@
 
 <body class="bg-gray-100 min-h-screen flex items-center justify-center">
     <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-3xl text-center">
-        <h1 class="text-2xl font-bold mb-4 text-blue-600">Opportunity Details</h1>
+        <h1 class="text-2xl font-bold mb-4 text-green-600">{{ opportunity['title'] }}</h1>
         <div class="text-left mb-4">
-            <p><strong>Title:</strong> {{ opportunity['title'] }}</p>
-            <p><strong>Time Commitment:</strong> {{ opportunity['time_commitment'] }}</p>
-            <p><strong>Description:</strong> {{ opportunity['description'] }}</p>
-            <p><strong>Cities:</strong> {{ opportunity['cities'] }}</p>
-            <p><strong>Due Date:</strong> {{ opportunity['due_date'] }}</p>
+            <p class="text-sm font-medium text-green-600">Time Commitment:</p>
+            <p class="text-lg text-black mb-2">{{ opportunity['time_commitment'] }}</p>
+            <p class="text-sm font-medium text-green-600">Due Date:</p>
+            <p class="text-lg text-black mb-2">{{ opportunity['due_date'] }}</p>
+            <p class="text-sm font-medium text-green-600">Description:</p>
+            <p class="text-lg text-black mb-2">{{ opportunity['description'] }}</p>
         </div>
-        <!-- <a class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" href="{{ url_for('index') }}">Back</a> -->
+        <a class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded mt-4 inline-block"
+            href="{{ url_for('index') }}">Back</a>
     </div>
 </body>
 
