@@ -1,99 +1,57 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "form_base.html" %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create Opportunity</title>
-    <!-- Add Tailwind CSS CDN -->
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-</head>
+{% block title %}Create Opportunity{% endblock %}
 
-<body class="bg-gray-100 min-h-screen flex items-center justify-center">
+{% block content %}
+    <h2 class="text-3xl font-bold mb-6 text-center text-green-600">Create Opportunity</h2>
 
-    <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-lg">
-        <h2 class="text-3xl font-bold mb-6 text-center text-blue-600">Create Opportunity</h2>
-
-        <form method="post" class="space-y-6">
-            {{ form.hidden_tag() }}
-            <div>
-                {{ form.title.label(class='block text-gray-700 text-sm font-bold mb-2') }}
-                {{ form.title(size=20, class='w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent') }}
+    <form method="post" class="space-y-6">
+        {{ form.hidden_tag() }}
+        <div>
+            {{ form.title.label(class='block text-gray-700 text-sm font-bold mb-2') }}
+            {{ form.title(size=20, class='w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent') }}
+        </div>
+        <div>
+            {{ form.time_commitment.label(class='block text-gray-700 text-sm font-bold mb-2') }}
+            <div class="flex flex-col space-y-2">
+                {% for subfield in form.time_commitment %}
+                <label class="inline-flex items-center">
+                    {{ subfield(class='form-checkbox text-green-500') }}
+                    <span class="ml-2">{{ subfield.label.text }}</span>
+                </label>
+                {% endfor %}
             </div>
-            <div>
-                {{ form.time_commitment.label(class='block text-gray-700 text-sm font-bold mb-2') }}
-                <div class="flex flex-col space-y-2">
-                    {% for subfield in form.time_commitment %}
-                    <label class="inline-flex items-center">
-                        {{ subfield(class='form-checkbox text-blue-500') }}
-                        <span class="ml-2">{{ subfield.label.text }}</span>
-                    </label>
-                    {% endfor %}
-                </div>
+        </div>
+        <div>
+            {{ form.description.label(class='block text-gray-700 text-sm font-bold mb-2') }}
+            {{ form.description(size=40, class='w-full h-32 px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent') }}
+        </div>
+        <div>
+            {{ form.cities.label(class='block text-gray-700 text-sm font-bold mb-2') }}
+            <div class="flex items-center mb-2">
+                <input type="checkbox" id="select_all" class="form-checkbox text-green-500 mr-2">
+                <label for="select_all" class="text-gray-700">Select All</label>
             </div>
-            <div>
-                {{ form.description.label(class='block text-gray-700 text-sm font-bold mb-2') }}
-                {{ form.description(size=40, class='w-full h-32 px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent') }}
+            <div class="grid grid-cols-2 gap-2">
+                {% for subfield in form.cities %}
+                <label class="inline-flex items-center">
+                    {{ subfield(class='form-checkbox text-green-500') }}
+                    <span class="ml-2">{{ subfield.label.text }}</span>
+                </label>
+                {% endfor %}
             </div>
-            <div>
-                {{ form.cities.label(class='block text-gray-700 text-sm font-bold mb-2') }}
-                <div class="flex items-center mb-2">
-                    <input type="checkbox" id="select_all" class="form-checkbox text-blue-500 mr-2">
-                    <label for="select_all" class="text-gray-700">Select All</label>
-                </div>
-                <div class="grid grid-cols-2 gap-2">
-                    {% for subfield in form.cities %}
-                    <label class="inline-flex items-center">
-                        {{ subfield(class='form-checkbox text-blue-500') }}
-                        <span class="ml-2">{{ subfield.label.text }}</span>
-                    </label>
-                    {% endfor %}
-                </div>
-            </div>
-            <div>
-                {{ form.due_date.label(class='block text-gray-700 text-sm font-bold mb-2') }}
-                {{ form.due_date(size=20, class='w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent') }}
-            </div>      
-            <div>
-                <input type="submit" value="Create"
-                    class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-            </div>
-            <div>
-                <a href="{{ url_for('index') }}"
-                    class="w-full bg-gray-400 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline block text-center mt-4">Cancel</a>
-            </div>
-        </form>
-    </div>
-
-    <script>
-        // Function to update Select All checkbox based on individual checkboxes
-        function updateSelectAll() {
-            var checkboxes = document.querySelectorAll('input[type="checkbox"]');
-            var allChecked = true;
-            checkboxes.forEach(function (checkbox) {
-                if (checkbox !== selectAllCheckbox && !checkbox.checked) {
-                    allChecked = false;
-                }
-            });
-            selectAllCheckbox.checked = allChecked;
-        }
-
-        var selectAllCheckbox = document.getElementById('select_all');
-        selectAllCheckbox.onclick = function () {
-            var checkboxes = document.querySelectorAll('input[type="checkbox"]');
-            checkboxes.forEach(function (checkbox) {
-                checkbox.checked = selectAllCheckbox.checked;
-            });
-        }
-
-        var checkboxes = document.querySelectorAll('input[type="checkbox"]');
-        checkboxes.forEach(function (checkbox) {
-            if (checkbox !== selectAllCheckbox) {
-                checkbox.onclick = updateSelectAll;
-            }
-        });
-    </script>
-
-</body>
-
-</html>
+        </div>
+        <div>
+            {{ form.due_date.label(class='block text-gray-700 text-sm font-bold mb-2') }}
+            {{ form.due_date(size=20, class='w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent') }}
+        </div>
+        <div>
+            <input type="submit" value="Create"
+                class="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+        </div>
+        <div>
+            <a href="{{ url_for('index') }}"
+                class="w-full bg-gray-400 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline block text-center mt-4">Cancel</a>
+        </div>
+    </form>
+{% endblock %}
