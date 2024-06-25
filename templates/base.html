@@ -5,6 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{% block title %}{% endblock %}</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+    .bg-primary { background-color: #457D58; }
+    .bg-secondary { background-color: #F6F6E9; }
+    .text-primary { color: #457D58; }
+    .text-secondary { color: #F6F6E9; }
+    .hover\\:bg-accent:hover { background-color: #5FB54A; }
+  </style>
   {% block head %}{% endblock %}
 </head>
 <body class="bg-gray-100 min-h-screen flex items-center justify-center">

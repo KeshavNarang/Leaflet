@@ -5,14 +5,22 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Home</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+    .bg-primary { background-color: #457D58; }
+    .bg-secondary { background-color: #F6F6E9; }
+    .text-primary { color: #457D58; }
+    .text-secondary { color: #F6F6E9; }
+    .text-black { color: #000; }
+    .hover\\:bg-primary:hover { background-color: #5FB54A; }
+  </style>
 </head>
 <body class="bg-white min-h-screen flex items-center justify-center p-0 m-0">
   <div class="w-full h-full grid grid-cols-1 md:grid-cols-2">
     <div class="login-section flex flex-col justify-center p-4 md:p-10 max-w-md mx-auto">
-      <h1 class="text-6xl font-bold mb-6 text-blue-600">Leaflet: Use Your Voice for Change </h1>
+      <h1 class="text-6xl font-bold mb-6 text-primary">Leaflet: <span class="text-primary">Use Your Voice for Change</span></h1>
       <p class="text-2xl mb-6 text-gray-700">Connecting California's youth to local environmental advocacy opportunities and resources.</p>
       <div>
-        <a class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded focus:outline-none focus:shadow-outline text-xl inline-block" href="{{ url_for('login') }}">Login with Gmail</a>
+        <a class="bg-primary hover:bg-primary text-secondary font-bold py-3 px-6 rounded focus:outline-none focus:shadow-outline text-xl inline-block" href="{{ url_for('login') }}">Login with Gmail</a>
       </div>
     </div>
     <div class="image-section flex flex-col justify-center items-center p-4">

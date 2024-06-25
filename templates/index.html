@@ -3,7 +3,7 @@
 {% block title %}Home{% endblock %}
 
 {% block content %}
-  <h1 class="text-5xl font-bold mb-8 text-blue-600 title-animation">Leaflet</h1>
+  <h1 class="text-5xl font-bold mb-8 text-primary title-animation">Leaflet</h1>
 
   {% if current_user.is_authenticated %}
     <p class="text-xl mb-1">Hello, {{ current_user.name }} ({{ current_user.email }})</p>
@@ -11,7 +11,7 @@
 
     <div class="mt-8">
       <table class="min-w-full bg-white shadow-md rounded-lg overflow-hidden border border-black">
-        <thead class="bg-blue-600 text-white">
+        <thead class="bg-primary text-secondary">
           <tr>
             <th class="py-3 px-4 text-center border border-black">Title</th>
             <th class="py-3 px-4 text-center border border-black">Time</th>
@@ -25,22 +25,22 @@
         <tbody class="divide-y divide-gray-200">
           {% for opportunity in opportunities %}
             {% if not opportunity['hidden'] or (opportunity['hidden'] and current_user.email in ADMIN_EMAILS) %}
-              <tr class="hover:bg-blue-100">
+              <tr class="hover:bg-accent">
                 <td class="py-4 px-4 border border-black">{{ opportunity[1] }}</td>
                 <td class="py-4 px-4 border border-black">{{ opportunity[2] }}</td>
                 <td class="py-4 px-4 border border-black">
-                  <a class="text-blue-600" href="{{ url_for('view_opportunity', opportunity_id=opportunity['id']) }}" target="_blank">{{ opportunity[3][:25]}}{{ '... (click to read more)' if len(opportunity[3]) > 10 else '' }}</a>
+                  <a class="text-primary" href="{{ url_for('view_opportunity', opportunity_id=opportunity['id']) }}" target="_blank">{{ opportunity[3][:25]}}{{ '... (click to read more)' if len(opportunity[3]) > 10 else '' }}</a>
                 </td>
                 <td class="py-4 px-4 border border-black">{{ opportunity[5] }}</td>
                 {% if current_user.email in ADMIN_EMAILS %}
                   <td class="py-4 px-4 border border-black">
-                    <a class="text-blue-600" href="{{ url_for('edit_opportunity', opportunity_id=opportunity['id']) }}">Edit</a>
+                    <a class="text-primary" href="{{ url_for('edit_opportunity', opportunity_id=opportunity['id']) }}">Edit</a>
                     <br>
-                    <a class="text-blue-600" href="{{ url_for('toggle_opportunity', opportunity_id=opportunity['id']) }}">
+                    <a class="text-primary" href="{{ url_for('toggle_opportunity', opportunity_id=opportunity['id']) }}">
                       {{ 'Show' if opportunity['hidden'] else 'Hide' }}
                     </a>
                     <br>
-                    <a class="text-blue-600" href="{{ url_for('remove_opportunity', opportunity_id=opportunity['id']) }}">Remove</a>
+                    <a class="text-primary" href="{{ url_for('remove_opportunity', opportunity_id=opportunity['id']) }}">Remove</a>
                   </td>
                 {% endif %}
               </tr>
@@ -52,12 +52,12 @@
 
     <div class="space-x-4 mt-8">  
       {% if current_user.email in ADMIN_EMAILS %}
-        <a class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" href="{{ url_for('create_opportunity') }}">Create Opportunity</a>
+        <a class="bg-primary hover:bg-accent text-secondary font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" href="{{ url_for('create_opportunity') }}">Create Opportunity</a>
       {% endif %}
-      <a class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" href="{{ url_for('change_city') }}">Change City</a>
-      <a class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" href="{{ url_for('logout') }}">Logout</a>
+      <a class="bg-primary hover:bg-accent text-secondary font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" href="{{ url_for('change_city') }}">Change City</a>
+      <a class="bg-primary hover:bg-accent text-secondary font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" href="{{ url_for('logout') }}">Logout</a>
     </div>
   {% else %}
-    <a class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" href="{{ url_for('login') }}">Login with Gmail</a>
+    <a class="bg-primary hover:bg-accent text-secondary font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" href="{{ url_for('login') }}">Login with Gmail</a>
   {% endif %}
 {% endblock %}
