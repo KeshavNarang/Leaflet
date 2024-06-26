@@ -252,6 +252,7 @@ def create_opportunity():
 
     return render_template("create_opportunity.html", form=form)
 
+
 @app.route("/hide_opportunity/<int:opportunity_id>")
 @login_required
 def hide_opportunity(opportunity_id):
