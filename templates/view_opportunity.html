@@ -17,7 +17,7 @@
             <p class="text-sm font-medium text-green-600">Due Date:</p>
             <p class="text-lg text-black mb-2">{{ opportunity['due_date'] }}</p>
             <p class="text-sm font-medium text-green-600">Description:</p>
-            <p class="text-lg text-black mb-2">{{ opportunity['description'] }}</p>
+            <p class="text-lg text-black mb-2">{{ opportunity['description']|safe }}</p>
         </div>
         <a class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded mt-4 inline-block"
             href="{{ url_for('index') }}">Back</a>
