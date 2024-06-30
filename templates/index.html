@@ -13,12 +13,12 @@
       <table class="min-w-full bg-white">
         <thead class="bg-primary text-secondary">
           <tr>
-            <th class="py-3 px-4 text-center border border-gray-200">Title</th>
-            <th class="py-3 px-4 text-center border border-gray-200">Time</th>
-            <th class="py-3 px-4 text-center border border-gray-200">Description</th>
-            <th class="py-3 px-4 text-center border border-gray-200">Due Date</th>
+            <th class="py-3 px-4 text-center border border-black">Title</th>
+            <th class="py-3 px-4 text-center border border-black">Time</th>
+            <th class="py-3 px-4 text-center border border-black">Description</th>
+            <th class="py-3 px-4 text-center border border-black">Due Date</th>
             {% if current_user.email in ADMIN_EMAILS %}
-              <th class="py-3 px-4 text-center border border-gray-200">Actions</th>
+              <th class="py-3 px-4 text-center border border-black">Actions</th>
             {% endif %}
           </tr>
         </thead>
@@ -26,9 +26,9 @@
           {% for opportunity in opportunities %}
             {% if not opportunity['hidden'] or (opportunity['hidden'] and current_user.email in ADMIN_EMAILS) %}
               <tr class="hover:bg-accent">
-                <td class="py-4 px-4 border border-gray-200">{{ opportunity[1] }}</td>
-                <td class="py-4 px-4 border border-gray-200">{{ opportunity[2] }}</td>
-                <td class="py-4 px-4 border border-gray-200">
+                <td class="py-4 px-4 border border-black">{{ opportunity[1] }}</td>
+                <td class="py-4 px-4 border border-black">{{ opportunity[2] }}</td>
+                <td class="py-4 px-4 border border-black">
                   {% set raw_description = opportunity[3] | striptags | trim %}
                   {% if raw_description | length > 25 %}
                     {{ raw_description[:25] }}{% if raw_description | length > 25 %} <a class="text-primary" href="{{ url_for('view_opportunity', opportunity_id=opportunity['id']) }}" target="_blank"> ... (click to read more)</a>{% endif %}
@@ -36,9 +36,9 @@
                     <a class="text-primary" href="{{ url_for('view_opportunity', opportunity_id=opportunity['id']) }}">{{ opportunity[3] | safe }}</a>
                   {% endif %}               
                 </td>
-                <td class="py-4 px-4 border border-gray-200">{{ opportunity[5] }}</td>
+                <td class="py-4 px-4 border border-black">{{ opportunity[5] }}</td>
                 {% if current_user.email in ADMIN_EMAILS %}
-                  <td class="py-4 px-4 border border-gray-200">
+                  <td class="py-4 px-4 border border-black">
                     <a class="text-primary" href="{{ url_for('edit_opportunity', opportunity_id=opportunity['id']) }}">Edit</a>
                     <br>
                     <a class="text-primary" href="{{ url_for('toggle_opportunity', opportunity_id=opportunity['id']) }}">
