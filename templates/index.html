@@ -9,7 +9,7 @@
     <p class="text-xl mb-1">Hello, {{ current_user.name }} ({{ current_user.email }})</p>
     <p class="text-lg mb-4 mt-1">You are viewing events for the following cities: {{ current_user.city or "Palo Alto" }}</p>
 
-    <div class="mt-8">
+    <div class="mt-8 overflow-x-auto">
       <table class="min-w-full bg-white shadow-md rounded-lg overflow-hidden border border-black">
         <thead class="bg-primary text-secondary">
           <tr>
