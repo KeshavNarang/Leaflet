@@ -79,7 +79,7 @@ class Opportunity:
     def get_all():
         conn = get_db_connection()
         c = conn.cursor()
-        c.execute("SELECT title, time_commitment, description, cities, due_date FROM opportunities")
+        c.execute("SELECT id, title, time_commitment, description, cities, due_date FROM opportunities")
         opportunities = c.fetchall()
         conn.close()
         return opportunities

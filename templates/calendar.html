@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block title %}Calendar{% endblock %}
+
+{% block head %}
+  {{ super() }}
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.11.3/main.min.css" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+  <h1 class="text-5xl font-bold mb-8 text-primary">Calendar</h1>
+
+  <div id="calendar"></div>
+{% endblock %}
+
+{% block scripts %}
+  {{ super() }}
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var calendarEl = document.getElementById('calendar');
+
+      var calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: 'dayGridMonth',
+        events: [
+          {% for opportunity in opportunities %}
+            {
+              title: "{{ opportunity[1] }}",
+              start: "{{ opportunity[5] }}",
+              description: "{{ opportunity[3] | striptags | trim }}",
+              url: "{{ url_for('view_opportunity', opportunity_id=opportunity[0]) }}"
+            },
+          {% endfor %}
+        ],
+        eventClick: function(info) {
+          info.jsEvent.preventDefault();
+          if (info.event.url) {
+            window.open(info.event.url, "_blank");
+          }
+        },
+        eventDidMount: function(info) {
+          $(info.el).tooltipster({
+            content: info.event.extendedProps.description,
+            delay: 200,
+            trigger: 'hover',
+            theme: 'tooltipster-shadow'
+          });
+        }
+      });
+
+      calendar.render();
+    });
+  </script>
+{% endblock %}

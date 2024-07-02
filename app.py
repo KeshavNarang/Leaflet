@@ -141,6 +141,13 @@ def callback():
         return redirect(url_for("collect_city"))
     return redirect(url_for("index"))
 
+
+@app.route('/calendar')
+@login_required
+def calendar():
+    opportunities = Opportunity.get_all()  # Fetch opportunities from your data source
+    return render_template('calendar.html', opportunities=opportunities)
+
 # Generate city selection form
 def generate_city_form():
     class CityForm(FlaskForm):
