@@ -11,6 +11,9 @@ from db import init_db_command
 from user import User, Opportunity
 from config import ADMIN_EMAILS
 
+import gspread
+from oauth2client.service_account import ServiceAccountCredentials
+
 IS_PROD=os.environ.get("IS_PROD") or False
 
 # Validate
@@ -38,6 +41,27 @@ init_db_command(IS_PROD)
 
 # OAuth 2 client setup
 client = WebApplicationClient(GOOGLE_CLIENT_ID)
+
+# Define the scope of access (read/write)
+scope = ['https://spreadsheets.google.com/feeds', 'https://www.googleapis.com/auth/drive']
+
+# Path to the JSON file with credentials
+credentials_path = 'credentials.json'
+
+# Load credentials from the JSON key file
+credentials = ServiceAccountCredentials.from_json_keyfile_name(credentials_path, scope)
+
+# Authorize with Google Sheets API
+gc = gspread.authorize(credentials)
+
+spreadsheet_url = 'https://docs.google.com/spreadsheets/d/1WCDdY0UU02dWUl5nxWnXz816l3sJCMRj5bE8dwooC7Y/'
+sh = gc.open_by_url(spreadsheet_url)
+
+# Select a worksheet
+worksheet = sh.sheet1  # Change sheet1 to your actual sheet name if different
+
+# Get all values from the worksheet
+values = worksheet.get_all_values()
 
 # Flask-Login helper to retrieve a user from our db
 @login_manager.user_loader
@@ -129,6 +153,16 @@ def callback():
     else:
         return "User email not available or not verified by Google.", 400
     
+    is_valid_user = False
+    user_email = userinfo_response.json()["email"]
+    values = worksheet.col_values(2)  # Assuming emails are in the second column
+
+    if user_email in values or user_email in ADMIN_EMAILS:
+        is_valid_user = True
+    
+    if not is_valid_user:
+        return redirect(url_for("fill_out_form"))  # Redirect to fill out form if not
+
     user = User.get(unique_id)
     if not user:
         default_city = "Santa Clara" if users_email in ADMIN_EMAILS else None
@@ -140,6 +174,10 @@ def callback():
     if current_user.city is None and current_user.email not in ADMIN_EMAILS:
         return redirect(url_for("collect_city"))
     return redirect(url_for("index"))
+
+@app.route("/fill_out_form")
+def fill_out_form():
+    return redirect("https://docs.google.com/forms/d/1jypKauhIPYIwiPSaHN0jo2mZaAEdhkfjkfpueIT_FXI/edit")
 
 @app.route("/users")
 @login_required

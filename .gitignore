@@ -164,3 +164,4 @@ cython_debug/
 archive
 config.py
 database.db
+credentials.json
