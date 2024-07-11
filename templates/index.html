@@ -59,6 +59,7 @@
       <a class="bg-primary hover:bg-accent text-secondary font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" href="{{ url_for('resources') }}">Resources</a>
       <a class="bg-primary hover:bg-accent text-secondary font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" href="{{ url_for('calendar') }}">View Calendar</a>
       {% if current_user.email in ADMIN_EMAILS %}
+      <a class="bg-primary hover:bg-accent text-secondary font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" href="{{ url_for('view_users') }}">View Users</a>
         <a class="bg-primary hover:bg-accent text-secondary font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" href="{{ url_for('create_opportunity') }}">Create Opportunity</a>
       {% endif %}
       <a class="bg-primary hover:bg-accent text-secondary font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" href="{{ url_for('change_city') }}">Change County</a>

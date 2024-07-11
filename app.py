@@ -141,6 +141,15 @@ def callback():
         return redirect(url_for("collect_city"))
     return redirect(url_for("index"))
 
+@app.route("/users")
+@login_required
+def view_users():
+    if current_user.email not in ADMIN_EMAILS:
+        abort(403)  # Forbidden if not an admin
+
+    users = User.get_all()
+    return render_template("users.html", users=users)
+
 @app.route('/resources')
 @login_required
 def resources():

@@ -41,6 +41,15 @@ class User(UserMixin):
         return User(
             id_=user['id'], name=user['name'], email=user['email'], city=user['city']
         )
+    
+    @staticmethod
+    def get_all():
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute("SELECT id, name, email, city FROM user")
+        users = cursor.fetchall()
+        conn.close()
+        return users
 
     @staticmethod
     def create(id_, name, email, city):
