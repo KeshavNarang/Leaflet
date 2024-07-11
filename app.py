@@ -177,7 +177,7 @@ def callback():
 
 @app.route("/fill_out_form")
 def fill_out_form():
-    return redirect("https://docs.google.com/forms/d/1jypKauhIPYIwiPSaHN0jo2mZaAEdhkfjkfpueIT_FXI/edit")
+    return render_template('signup.html')
 
 @app.route("/users")
 @login_required
