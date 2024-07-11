@@ -5,6 +5,7 @@
 {% block head %}
   {{ super() }}
   <link href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.11.3/main.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tooltipster/3.3.0/css/tooltipster.bundle.min.css">
 {% endblock %}
 
 {% block content %}
@@ -17,6 +18,8 @@
 
 {% block scripts %}
   {{ super() }}
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.11.3/main.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/tooltipster/3.3.0/js/tooltipster.bundle.min.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', function() {
       var calendarEl = document.getElementById('calendar');
@@ -28,7 +31,7 @@
             {
               title: "{{ opportunity[1] }}",
               start: "{{ opportunity[5] }}",
-              description: "{{ opportunity[3] | striptags | trim }}",
+              description: "{{ opportunity[3] | striptags | trim | truncate(10, true) }}", // Truncate to 10 characters
               url: "{{ url_for('view_opportunity', opportunity_id=opportunity[0]) }}"
             },
           {% endfor %}
@@ -42,6 +45,10 @@
         eventDidMount: function(info) {
           $(info.el).tooltipster({
             content: info.event.extendedProps.description,
+            functionBefore: function(instance, helper) {
+              var content = instance.content();
+              instance.content(content.substring(0, 10) + (content.length > 10 ? '...' : ''));
+            },
             delay: 200,
             trigger: 'hover',
             theme: 'tooltipster-shadow'
