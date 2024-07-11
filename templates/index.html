@@ -7,7 +7,7 @@
 
   {% if current_user.is_authenticated %}
     <p class="text-xl mb-1">Hello, {{ current_user.name }} ({{ current_user.email }})</p>
-    <p class="text-lg mb-4 mt-1">You are viewing events for the following cities: {{ current_user.city or "Palo Alto" }}</p>
+    <p class="text-lg mb-4 mt-1">You are viewing events for the following counties: {{ current_user.city or "Santa Clara" }}</p>
 
     <div class="mt-8 shadow-lg rounded-lg overflow-hidden border border-gray-200 overflow-x-auto">
       <table class="min-w-full bg-white">
@@ -59,7 +59,7 @@
       {% if current_user.email in ADMIN_EMAILS %}
         <a class="bg-primary hover:bg-accent text-secondary font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" href="{{ url_for('create_opportunity') }}">Create Opportunity</a>
       {% endif %}
-      <a class="bg-primary hover:bg-accent text-secondary font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" href="{{ url_for('change_city') }}">Change City</a>
+      <a class="bg-primary hover:bg-accent text-secondary font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" href="{{ url_for('change_city') }}">Change County</a>
       <a class="bg-primary hover:bg-accent text-secondary font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" href="{{ url_for('logout') }}">Logout</a>
       <a class="bg-primary hover:bg-accent text-secondary font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" href="{{ url_for('calendar') }}">View Calendar</a>
     </div>

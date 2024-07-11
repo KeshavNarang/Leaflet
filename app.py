@@ -131,7 +131,7 @@ def callback():
     
     user = User.get(unique_id)
     if not user:
-        default_city = "Palo Alto" if users_email in ADMIN_EMAILS else None
+        default_city = "Santa Clara" if users_email in ADMIN_EMAILS else None
         User.create(unique_id, users_name, users_email, default_city)
         user = User(unique_id, users_name, users_email, default_city)
     
@@ -151,7 +151,7 @@ def calendar():
 # Generate city selection form
 def generate_city_form():
     class CityForm(FlaskForm):
-        cities = [(city, city) for city in ['Palo Alto', 'Fremont', 'San Jose', 'Burlingame']]
+        cities = [(city, city) for city in ['Santa Clara', 'San Mateo']]
         city = SelectMultipleField('City', choices=cities, option_widget=widgets.CheckboxInput(), coerce=str)
     return CityForm()
 
@@ -218,7 +218,7 @@ def edit_opportunity(opportunity_id):
         title = StringField('Title', [validators.InputRequired()], default=opportunity['title'])
         time_commitment = RadioField('Time Commitment', choices=[("Short", "Short"), ("Medium", "Medium"), ("Long", "Long")], validators=[validators.InputRequired()], default=opportunity['time_commitment'])
         description = StringField('Description', [validators.InputRequired()], default=opportunity['description'])
-        cities = SelectMultipleField('City', choices=[("Palo Alto", "Palo Alto"), ("Fremont", "Fremont"), ("San Jose", "San Jose"), ("Burlingame", "Burlingame")], option_widget=widgets.CheckboxInput(), coerce=str, default=opportunity['cities'].split(', '))
+        cities = SelectMultipleField('City', choices=[("Santa Clara", "Santa Clara"), ("San Mateo", "San Mateo")], option_widget=widgets.CheckboxInput(), coerce=str, default=opportunity['cities'].split(', '))
         due_date = StringField('Due Date', [validators.InputRequired()], default=opportunity['due_date'])
 
     form = EditOpportunityForm()
@@ -244,7 +244,7 @@ def create_opportunity():
         title = StringField('Title', [validators.InputRequired()])
         time_commitment = RadioField('Time Commitment', choices=[("Short", "Short"), ("Medium", "Medium"), ("Long", "Long")], validators=[validators.InputRequired()])
         description = StringField('Description', [validators.InputRequired()])
-        cities = SelectMultipleField('City', choices=[("Palo Alto", "Palo Alto"), ("Fremont", "Fremont"), ("San Jose", "San Jose"), ("Burlingame", "Burlingame")], option_widget=widgets.CheckboxInput(), coerce=str)
+        cities = SelectMultipleField('City', choices=[("Santa Clara", "Santa Clara"), ("San Mateo", "San Mateo")], option_widget=widgets.CheckboxInput(), coerce=str)
         due_date = StringField('Due Date', [validators.InputRequired()]) 
 
     form = OpportunityForm()

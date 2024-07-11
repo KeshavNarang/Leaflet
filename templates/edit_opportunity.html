@@ -29,10 +29,10 @@
         </div>
         <div>
             {{ form.cities.label(class='block text-gray-700 text-sm font-bold mb-2') }}
-            <div class="flex items-center mb-2">
+            <!-- <div class="flex items-center mb-2">
                 <input type="checkbox" id="select_all" class="form-checkbox text-green-500 mr-2">
                 <label for="select_all" class="text-gray-700">Select All</label>
-            </div>
+            </div> -->
             <div class="grid grid-cols-2 gap-2">
                 {% for subfield in form.cities %}
                 <label class="inline-flex items-center">
@@ -80,6 +80,12 @@
             description.value = quill.root.innerHTML;
         };
 
+        // Initialize Flatpickr date picker
+        flatpickr("#due_date", {
+            enableTime: true,
+            dateFormat: "Y-m-d H:i",
+        });
+
         function updateSelectAll() {
             var checkboxes = document.querySelectorAll('input[type="checkbox"]');
             var allChecked = true;
@@ -104,12 +110,6 @@
             if (checkbox !== selectAllCheckbox) {
                 checkbox.onclick = updateSelectAll;
             }
-        });
-
-        // Initialize Flatpickr date picker
-        flatpickr("#due_date", {
-            enableTime: true,
-            dateFormat: "Y-m-d H:i",
         });
     </script>
 {% endblock %}
