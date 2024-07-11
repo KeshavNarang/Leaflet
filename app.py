@@ -141,6 +141,11 @@ def callback():
         return redirect(url_for("collect_city"))
     return redirect(url_for("index"))
 
+@app.route('/resources')
+@login_required
+def resources():
+    opportunities = Opportunity.get_all()  # Fetch opportunities from your data source
+    return render_template('resources.html', opportunities=opportunities)
 
 @app.route('/calendar')
 @login_required

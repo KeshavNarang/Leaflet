@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %}Resources{% endblock %}
+
+{% block head %}
+  <style>
+    /* Override vertical centering */
+    body {
+      align-items: flex-start !important;
+    }
+    /* Ensure content is left-aligned */
+    .content-wrapper {
+      text-align: left;
+      margin-top: 2rem;
+      min-height: calc(100vh - 10rem); /* Adjust 6rem according to your header and footer heights */
+      display: flex;
+      flex-direction: column;
+    }
+    /* Center the Resources header */
+    .content-wrapper h1 {
+      text-align: center;
+    }
+  </style>
+{% endblock %}
+
+{% block content %}
+  <div class="content-wrapper">
+    <h1 class="text-3xl text-primary font-bold mb-4">Resources</h1>
+    <p class="text-lg">
+      <a href="https://docs.google.com/document/d/1IpFVmlWpM1wBt-dEzG_58VQ7UEIT3VkgVK0NTvucPG8/edit" class="text-primary hover:text-accent" target="_blank">
+        Public Commenting Guide
+      </a>
+    </p>
+  </div>
+
+  <a class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded mt-4 inline-block"
+            href="{{ url_for('index') }}">Back</a>
+{% endblock %}
