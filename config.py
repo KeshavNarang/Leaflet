@@ -1,7 +1,10 @@
-ADMIN_EMAILS = [
+OWNER_EMAILS = [
     "mrkeshavnarang@gmail.com"
 ]
 
-    # "darcypelham@gmail.com",
-    # "jaiwee458@gmail.com",
-    # "jaleenanneviray@gmail.com"
+ADMIN_EMAILS = [
+    "mrkeshavnarang@gmail.com",
+    "darcypelham@gmail.com",
+    "jaiwee458@gmail.com",
+    "jaleenanneviray@gmail.com"
+]

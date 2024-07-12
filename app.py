@@ -9,7 +9,7 @@ from wtforms import Form, RadioField, StringField, SelectField, SelectMultipleFi
 from flask_wtf import FlaskForm
 from db import init_db_command
 from user import User, Opportunity
-from config import ADMIN_EMAILS
+from config import ADMIN_EMAILS, OWNER_EMAILS
 
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
@@ -79,7 +79,7 @@ def index():
         user_cities = [city.strip() for city in current_user.city.split(',')] if current_user.city else []
         is_admin = current_user.email in ADMIN_EMAILS
         opportunities = Opportunity.get_opportunities_for_user_cities(user_cities, is_admin)
-        return render_template("index.html", opportunities=opportunities, ADMIN_EMAILS=ADMIN_EMAILS, len=len)
+        return render_template("index.html", opportunities=opportunities, ADMIN_EMAILS=ADMIN_EMAILS, OWNER_EMAILS=OWNER_EMAILS, len=len)
 
     else:
         return render_template("login.html")
