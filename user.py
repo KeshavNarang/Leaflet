@@ -71,6 +71,16 @@ class User(UserMixin):
         )
         conn.commit()
         conn.close()
+    
+    @staticmethod
+    def remove(user_id):
+        conn = get_db_connection()
+        conn.execute(
+            "DELETE FROM user WHERE id = ?",
+            (user_id,)
+        )
+        conn.commit()
+        conn.close()
 
 class Opportunity:
     @staticmethod

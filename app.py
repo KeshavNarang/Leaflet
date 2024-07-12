@@ -188,6 +188,42 @@ def view_users():
     users = User.get_all()
     return render_template("users.html", users=users)
 
+@app.route("/edit_users", methods=["GET", "POST"])
+@login_required
+def edit_users():
+    if current_user.email not in OWNER_EMAILS:
+        abort(403)  # Forbidden if not an owner
+
+    users = User.get_all()  # Fetch all users from database
+    return render_template("edit_users.html", users=users)
+
+@app.route("/edit_city/<string:user_id>", methods=["GET", "POST"])
+@login_required
+def edit_city(user_id):
+    if current_user.email not in OWNER_EMAILS:
+        abort(403)  # Forbidden if not an owner
+
+    user = User.get(user_id)
+    if not user:
+        abort(404)  # User not found
+
+    form = generate_city_form()
+    if form.validate_on_submit():
+        selected_cities = ', '.join(form.city.data)
+        User.update_city(user_id, selected_cities)
+        return redirect(url_for("edit_users"))
+
+    return render_city_template(form)
+
+@app.route("/delete_user/<string:user_id>", methods=["GET", "POST"])
+@login_required
+def delete_user(user_id):
+    if current_user.email not in OWNER_EMAILS:
+        abort(403)  # Forbidden if not an owner
+
+    User.remove(user_id)
+    return redirect(url_for("edit_users"))
+
 @app.route('/resources')
 @login_required
 def resources():

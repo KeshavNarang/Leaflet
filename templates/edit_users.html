@@ -1,13 +1,13 @@
-<!-- users.html -->
+<!-- edit_users.html -->
 
 {% extends "base.html" %}
 
 {% block title %}
-  Users List
+  Edit Users
 {% endblock %}
 
 {% block content %}
-  <h1 class="text-5xl font-bold mb-8 text-primary">Users</h1>
+  <h1 class="text-5xl font-bold mb-8 text-primary">Edit Users</h1>
   <div class="overflow-x-auto">
     <table class="min-w-full bg-white border border-gray-200">
       <thead>
@@ -15,6 +15,7 @@
           <th class="px-6 py-3 border-b-2 border-gray-200 text-sm leading-4 font-medium text-secondary uppercase tracking-wider">Name</th>
           <th class="px-6 py-3 border-b-2 border-gray-200 text-sm leading-4 font-medium text-secondary uppercase tracking-wider">Email</th>
           <th class="px-6 py-3 border-b-2 border-gray-200 text-sm leading-4 font-medium text-secondary uppercase tracking-wider">County</th>
+          <th class="px-6 py-3 border-b-2 border-gray-200 text-sm leading-4 font-medium text-secondary uppercase tracking-wider">Actions</th>
         </tr>
       </thead>
       <tbody>
@@ -23,12 +24,13 @@
           <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">{{ user['name'] }}</td>
           <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">{{ user['email'] }}</td>
           <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">{{ user['city'] }}</td>
+          <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+            <a href="{{ url_for('edit_city', user_id=user['id']) }}" class="text-primary hover:underline">Edit City</a> |
+            <a href="{{ url_for('delete_user', user_id=user['id']) }}" class="text-primary hover:underline">Delete</a>
+          </td>
         </tr>
         {% endfor %}
       </tbody>
     </table>
   </div>
-
-  <!-- <a class="bg-primary hover:bg-green-600 text-white font-bold py-2 px-4 rounded mt-4 inline-block"
-            href="{{ url_for('edit_users') }}">Back</a> -->
 {% endblock %}
