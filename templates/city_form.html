@@ -32,31 +32,51 @@
 
 {% block scripts %}
 <script>
-    // Function to update Select All checkbox based on individual checkboxes
-    function updateSelectAll() {
-        var checkboxes = document.querySelectorAll('input[type="checkbox"]');
-        var allChecked = true;
-        checkboxes.forEach(function (checkbox) {
-            if (checkbox !== selectAllCheckbox && !checkbox.checked) {
-                allChecked = false;
-            }
-        });
-        selectAllCheckbox.checked = allChecked;
-    }
+    // // Function to update Select All checkbox based on individual checkboxes
+    // function updateSelectAll() {
+    //     var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+    //     var allChecked = true;
+    //     checkboxes.forEach(function (checkbox) {
+    //         if (checkbox !== selectAllCheckbox && !checkbox.checked) {
+    //             allChecked = false;
+    //         }
+    //     });
+    //     selectAllCheckbox.checked = allChecked;
+    // }
 
-    var selectAllCheckbox = document.getElementById('select_all');
-    selectAllCheckbox.onclick = function () {
-        var checkboxes = document.querySelectorAll('input[type="checkbox"]');
-        checkboxes.forEach(function (checkbox) {
-            checkbox.checked = selectAllCheckbox.checked;
-        });
-    }
+    // var selectAllCheckbox = document.getElementById('select_all');
+    // selectAllCheckbox.onclick = function () {
+    //     var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+    //     checkboxes.forEach(function (checkbox) {
+    //         checkbox.checked = selectAllCheckbox.checked;
+    //     });
+    // }
+
+    // var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+    // checkboxes.forEach(function (checkbox) {
+    //     if (checkbox !== selectAllCheckbox) {
+    //         checkbox.onclick = updateSelectAll;
+    //     }
+    // });
 
     var checkboxes = document.querySelectorAll('input[type="checkbox"]');
-    checkboxes.forEach(function (checkbox) {
-        if (checkbox !== selectAllCheckbox) {
-            checkbox.onclick = updateSelectAll;
+    var form = document.querySelector('form');
+
+    // Submit handler to select all checkboxes if none are explicitly chosen
+    form.onsubmit = function () {
+        var anyChecked = false;
+
+        checkboxes.forEach(function (cb) {
+            if (cb.checked) {
+                anyChecked = true;
+            }
+        });
+
+        if (!anyChecked) {
+            checkboxes.forEach(function (cb) {
+                cb.checked = true;
+            });
         }
-    });
+    };
 </script>
 {% endblock %}
