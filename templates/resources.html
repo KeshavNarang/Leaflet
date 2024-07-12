@@ -4,7 +4,7 @@
 
 {% block head %}
   <style>
-    /* Override vertical centering */
+    /* Override vertical centering
     body {
       align-items: flex-start !important;
     }
@@ -12,7 +12,6 @@
     .content-wrapper {
       text-align: left;
       margin-top: 2rem;
-      min-height: calc(100vh - 10rem); /* Adjust 10rem according to your header and footer heights */
       display: flex;
       flex-direction: column;
     }
@@ -35,7 +34,7 @@
         San Mateo Public Commenting Instructions
       </a>
     </p>
-    <a class="bg-primary hover:bg-green-600 text-white font-bold py-2 px-4 rounded mt-4 inline-block"
-       href="{{ url_for('index') }}">Back</a>
   </div>
+  <!-- <a class="bg-primary hover:bg-green-600 text-white font-bold py-2 px-4 rounded mt-4 inline-block"
+       href="{{ url_for('index') }}">Back</a> -->
 {% endblock %}
