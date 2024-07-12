@@ -1,71 +1,62 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "base.html" %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Select County</title>
-    <!-- Add Tailwind CSS CDN -->
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-</head>
+{% block title %}Select County{% endblock %}
 
-<body class="bg-gray-100 min-h-screen flex items-center justify-center">
+{% block content %}
+<!-- <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-lg mx-auto mt-4"> -->
+    <h2 class="text-3xl font-bold mb-6 text-center text-green-600">Which county do you want to see events for?</h2>
 
-    <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-lg">
-        <h2 class="text-3xl font-bold mb-6 text-center text-green-600">Which county do you want to see events for?</h2>
-
-        <form method="post" class="space-y-6">
-            {{ form.hidden_tag() }}
-            <div>
-                <div class="flex items-center mb-2">
-                    <!-- <input type="checkbox" id="select_all" class="form-checkbox text-green-500 mr-2">
-                    <label for="select_all" class="text-gray-700">Select All</label> -->
-                </div>
-                <div class="grid grid-cols-2 gap-2">
-                    {% for subfield in form.city %}
-                    <label class="inline-flex items-center">
-                        {{ subfield(class='form-checkbox text-green-500') }}
-                        <span class="ml-2">{{ subfield.label.text }}</span>
-                    </label>
-                    {% endfor %}
-                </div>
+    <form method="post" class="space-y-6">
+        {{ form.hidden_tag() }}
+        <div>
+            <div class="flex items-center mb-2">
+                <!-- <input type="checkbox" id="select_all" class="form-checkbox text-green-500 mr-2">
+                <label for="select_all" class="text-gray-700">Select All</label> -->
             </div>
-            <div>
-                <input type="submit" value="Submit"
-                    class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+            <div class="grid grid-cols-1 gap-2">
+                {% for subfield in form.city %}
+                <label class="inline-flex items-center">
+                    {{ subfield(class='form-checkbox text-green-500') }}
+                    <span class="ml-2">{{ subfield.label.text }}</span>
+                </label>
+                {% endfor %}
             </div>
-        </form>
-    </div>
+        </div>
+        <div>
+            <input type="submit" value="Submit"
+                class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+        </div>
+    </form>
+</div>
+{% endblock %}
 
-    <script>
-        // Function to update Select All checkbox based on individual checkboxes
-        function updateSelectAll() {
-            var checkboxes = document.querySelectorAll('input[type="checkbox"]');
-            var allChecked = true;
-            checkboxes.forEach(function (checkbox) {
-                if (checkbox !== selectAllCheckbox && !checkbox.checked) {
-                    allChecked = false;
-                }
-            });
-            selectAllCheckbox.checked = allChecked;
-        }
-
-        var selectAllCheckbox = document.getElementById('select_all');
-        selectAllCheckbox.onclick = function () {
-            var checkboxes = document.querySelectorAll('input[type="checkbox"]');
-            checkboxes.forEach(function (checkbox) {
-                checkbox.checked = selectAllCheckbox.checked;
-            });
-        }
-
+{% block scripts %}
+<script>
+    // Function to update Select All checkbox based on individual checkboxes
+    function updateSelectAll() {
         var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+        var allChecked = true;
         checkboxes.forEach(function (checkbox) {
-            if (checkbox !== selectAllCheckbox) {
-                checkbox.onclick = updateSelectAll;
+            if (checkbox !== selectAllCheckbox && !checkbox.checked) {
+                allChecked = false;
             }
         });
-    </script>
+        selectAllCheckbox.checked = allChecked;
+    }
 
-</body>
+    var selectAllCheckbox = document.getElementById('select_all');
+    selectAllCheckbox.onclick = function () {
+        var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+        checkboxes.forEach(function (checkbox) {
+            checkbox.checked = selectAllCheckbox.checked;
+        });
+    }
 
-</html>
+    var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+    checkboxes.forEach(function (checkbox) {
+        if (checkbox !== selectAllCheckbox) {
+            checkbox.onclick = updateSelectAll;
+        }
+    });
+</script>
+{% endblock %}
