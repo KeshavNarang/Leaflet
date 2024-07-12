@@ -12,7 +12,7 @@
     .content-wrapper {
       text-align: left;
       margin-top: 2rem;
-      min-height: calc(100vh - 10rem); /* Adjust 6rem according to your header and footer heights */
+      min-height: calc(100vh - 10rem); /* Adjust 10rem according to your header and footer heights */
       display: flex;
       flex-direction: column;
     }
@@ -26,16 +26,16 @@
 {% block content %}
   <div class="content-wrapper">
     <h1 class="text-3xl text-primary font-bold mb-4">Resources</h1>
-    <p class="text-lg">
+    <p class="text-lg mb-4">
       <a href="https://docs.google.com/document/d/1IpFVmlWpM1wBt-dEzG_58VQ7UEIT3VkgVK0NTvucPG8/edit" class="text-primary hover:text-accent" target="_blank">
         Public Commenting Guide
       </a>
+      <br>
       <a href="https://www.smcgov.org/bos/meeting-information-guide" class="text-primary hover:text-accent" target="_blank">
         San Mateo Public Commenting Instructions
       </a>
     </p>
+    <a class="bg-primary hover:bg-green-600 text-white font-bold py-2 px-4 rounded mt-4 inline-block"
+       href="{{ url_for('index') }}">Back</a>
   </div>
-
-  <a class="bg-primary hover:bg-green-600 text-white font-bold py-2 px-4 rounded mt-4 inline-block"
-            href="{{ url_for('index') }}">Back</a>
 {% endblock %}
