@@ -155,13 +155,20 @@ def callback():
     
     is_valid_user = False
     user_email = userinfo_response.json()["email"]
-    values = worksheet.col_values(2)  # Assuming emails are in the second column
+    emails = worksheet.col_values(2)  # Assuming emails are in the second column
 
-    if user_email in values or user_email in ADMIN_EMAILS:
+    if user_email in emails or user_email in ADMIN_EMAILS:
         is_valid_user = True
     
     if not is_valid_user:
         return redirect(url_for("fill_out_form"))  # Redirect to fill out form if not
+
+    # Get the index of the user email in the spreadsheet
+    user_index = emails.index(user_email) + 1  # +1 to account for the header row
+
+    # Read the name and county from the spreadsheet
+    users_name = worksheet.cell(user_index, 3).value  # Assuming names are in the third column
+    user_county = worksheet.cell(user_index, 4).value  # Assuming counties are in the fourth column
 
     user = User.get(unique_id)
     if not user:
@@ -174,6 +181,18 @@ def callback():
     if current_user.city is None and current_user.email not in ADMIN_EMAILS:
         return redirect(url_for("collect_city"))
     return redirect(url_for("index"))
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('error.html', error_code=404, error_message="Page Not Found"), 404
+
+@app.errorhandler(500)
+def internal_server_error(e):
+    return render_template('error.html', error_code=500, error_message="Internal Server Error"), 500
+
+@app.errorhandler(Exception)
+def handle_exception(e):
+    return render_template('error.html', error_code=500, error_message="An unexpected error occurred"), 500
 
 @app.route("/fill_out_form")
 def fill_out_form():

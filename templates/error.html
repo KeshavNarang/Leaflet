@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Error</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #F6F6E9; /* Secondary background color */
+            color: #457D58; /* Primary text color */
+            text-align: center;
+            padding: 50px;
+        }
+        .error-container {
+            display: inline-block;
+            text-align: left;
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #fff; /* White background for error container */
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        h1 {
+            font-size: 48px;
+            margin: 0;
+            /* color: #dc3545;  */
+        }
+        p {
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+        .details {
+            display: none;
+            margin-top: 20px;
+        }
+        .btn {
+            background-color: #457D58; /* Primary background color */
+            color: #F6F6E9; /* Secondary text color */
+            border: none;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        .btn:hover {
+            background-color: #5FB54A; /* Accent color on hover */
+        }
+    </style>
+    <script>
+        function toggleDetails() {
+            var details = document.getElementById("error-details");
+            details.style.display = details.style.display === "none" ? "block" : "none";
+        }
+    </script>
+</head>
+<body>
+    <div class="error-container">
+        <p>Sorry, something went wrong. Click <a href="{{ url_for('index') }}"> here</a> to go back home. </p>
+        <button class="btn" onclick="toggleDetails()">Error Details</button>
+        <div class="details" id="error-details">
+            <p>{{ error_code }}: {{ error_message }}</p>
+        </div>
+    </div>
+</body>
+</html>

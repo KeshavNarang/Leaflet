@@ -3,37 +3,50 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login</title>
+  <title>Login - Leaflet</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <style>
     .bg-primary { background-color: #457D58; }
     .bg-secondary { background-color: #F6F6E9; }
     .text-primary { color: #457D58; }
     .text-secondary { color: #F6F6E9; }
-    .text-black { color: #000; }
-    .hover\\:bg-primary:hover { background-color: #5FB54A; }
-    /* Define the font for "The Seasons" */
-    .font-seasons {
-      font-family: 'The Seasons', sans-serif;
-    }
+    .hover\:bg-primary:hover { background-color: #5FB54A; }
+    .font-seasons { font-family: 'The Seasons', sans-serif; }
+    .custom-link { color: #457D58; text-decoration: underline; }
+    .custom-link:hover { color: #5FB54A; }
   </style>
-  <!-- Include the font link -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=The+Seasons&display=swap">
 </head>
 <body class="bg-white min-h-screen flex items-center justify-center p-0 m-0">
   <div class="w-full h-full grid grid-cols-1 md:grid-cols-2">
     <div class="login-section flex flex-col justify-center p-4 md:p-10 max-w-md mx-auto">
-      <h1 class="text-6xl font-bold mb-6 text-primary"><span class="text-primary">Leaflet: Use Your Voice for Change</span></h1>
-      <p class="text-2xl mb-6 text-gray-700">Connecting California's youth to local environmental advocacy opportunities and resources.</p>
-      <div>
-        <a class="bg-primary hover:bg-primary text-secondary font-bold py-3 px-6 rounded focus:outline-none focus:shadow-outline text-xl inline-block" href="{{ url_for('fill_out_form') }}">Signup</a>
-        <a class="bg-primary hover:bg-primary text-secondary font-bold py-3 px-6 rounded focus:outline-none focus:shadow-outline text-xl inline-block" href="{{ url_for('login') }}">Login with Gmail</a>
+      <h1 class="text-6xl font-bold text-primary mb-4"><span class="font-seasons">Leaflet</span></h1>
+      <p class="text-2xl mb-6 text-gray-700">Public Commenting Made Easy.</p>
+      <p class="text-lg mb-4">
+        New to Leaflet? Follow the instructions below!
+      </p>
+      <ol class="list-decimal list-inside text-gray-700 mb-6">
+        <li>Click <a href="{{ url_for('fill_out_form') }}" class="custom-link">signup</a> and fill out a short Google Form.</li>
+        <li>Submitting the form creates a Leaflet account. </li>
+        <li>You're all set! You can <a href="{{ url_for('login') }}" class="custom-link">login here</a> with your email.</li>
+      </ol>
+      <p class="text-lg mb-4">
+        Or, if you already have an account:
+      </p>
+      <ol class="list-decimal list-inside text-gray-700 mb-6">
+        <li> Click <a href="{{ url_for('login') }}" class="custom-link"> here</a> to login using your registered email.</li>
+      </ol>
+      <div class="flex space-x-4">
+        <a class="bg-primary hover:bg-primary text-secondary font-bold py-3 px-6 rounded focus:outline-none focus:shadow-outline text-xl inline-block" href="/fill_out_form">Signup</a>
+        <a class="bg-primary hover:bg-primary text-secondary font-bold py-3 px-6 rounded focus:outline-none focus:shadow-outline text-xl inline-block" href="/login">Login with Gmail</a>
       </div>
     </div>
     <div class="image-section flex flex-col justify-center items-center p-4">
       <div class="max-w-md w-full">
-        <img src="{{ url_for('static', filename='Leaflet_Team.png') }}" alt="Leaflet Team" class="w-full h-auto object-contain">
-        <p class="text-sm text-gray-600 mt-2"> The Leaflet website was created by the public commenting team of <a class="text-blue-500" target="_blank" href="https://acterra.org/education/acterra-student-ambassador-program/"> Acterra's Student Ambassador Program. </a> </p>
+        <img src="/static/Leaflet_Team.png" alt="Leaflet Team" class="w-full h-auto object-contain">
+        <p class="text-sm text-gray-600 mt-2">
+          The Leaflet website was created by the public commenting team of <a class="text-blue-500" target="_blank" href="https://acterra.org/education/acterra-student-ambassador-program/">Acterra's Student Ambassador Program.</a>
+        </p>
       </div>
     </div>
   </div>
