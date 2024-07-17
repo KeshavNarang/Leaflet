@@ -26,7 +26,7 @@
         New to Leaflet? Follow the instructions below!
       </p>
       <ol class="list-decimal list-inside text-gray-700 mb-6">
-        <li>Click <a href="{{ url_for('fill_out_form') }}" class="custom-link">signup</a> and fill out a short Google Form.</li>
+        <li>Click <a class="custom-link" target="_blank" href="https://docs.google.com/forms/d/e/1FAIpQLSdMVmKMbrQo4c1Z5CWdIomhMwqHak5_raoLpsed-naP8Hn-ew/viewform?usp=sharing">signup</a> and fill out a short Google Form.</li> </li>
         <li>Submitting the form creates a Leaflet account. </li>
         <li>You're all set! You can <a href="{{ url_for('login') }}" class="custom-link">login here</a> with your email.</li>
       </ol>
@@ -36,10 +36,10 @@
       <ol class="list-decimal list-inside text-gray-700 mb-6">
         <li> Click <a href="{{ url_for('login') }}" class="custom-link"> here</a> to login using your registered email.</li>
       </ol>
-      <div class="flex space-x-4">
-        <a class="bg-primary hover:bg-primary text-secondary font-bold py-3 px-6 rounded focus:outline-none focus:shadow-outline text-xl inline-block" href="/fill_out_form">Signup</a>
-        <a class="bg-primary hover:bg-primary text-secondary font-bold py-3 px-6 rounded focus:outline-none focus:shadow-outline text-xl inline-block" href="/login">Login with Gmail</a>
-      </div>
+      <div class="flex justify-center">
+        <!-- <a class="bg-primary hover:bg-primary text-secondary font-bold py-3 px-6 rounded focus:outline-none focus:shadow-outline text-xl inline-block" href="/fill_out_form">Signup</a> -->
+        <a class="bg-primary hover:bg-primary text-secondary font-bold py-3 px-6 rounded focus:outline-none focus:shadow-outline text-xl inline-block w-full text-center max-w-lg" href="/login">Login with Gmail</a>
+    </div>
     </div>
     <div class="image-section flex flex-col justify-center items-center p-4">
       <div class="max-w-md w-full">
