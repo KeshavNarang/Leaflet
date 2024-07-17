@@ -157,7 +157,7 @@ def callback():
     user_email = userinfo_response.json()["email"]
     emails = worksheet.col_values(2)  # Assuming emails are in the second column
 
-    if user_email in emails or user_email in ADMIN_EMAILS:
+    if user_email in emails:
         is_valid_user = True
     
     if not is_valid_user:
