@@ -172,9 +172,9 @@ def callback():
 
     user = User.get(unique_id)
     if not user:
-        default_city = "Santa Clara" if users_email in ADMIN_EMAILS else None
-        User.create(unique_id, users_name, users_email, default_city)
-        user = User(unique_id, users_name, users_email, default_city)
+        # default_city = "Santa Clara" if users_email in ADMIN_EMAILS else None
+        User.create(unique_id, users_name, users_email, user_county)
+        user = User(unique_id, users_name, users_email, user_county)
     
     login_user(user)
 
