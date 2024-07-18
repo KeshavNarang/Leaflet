@@ -314,8 +314,8 @@ def mark_opportunity_done(opportunity_id):
 @app.route("/opportunity/<int:opportunity_id>/edit", methods=["GET", "POST"])
 @login_required
 def edit_opportunity(opportunity_id):
-    if current_user.email not in ADMIN_EMAILS:
-        return redirect(url_for("index"))
+    # if current_user.email not in ADMIN_EMAILS:
+    #     return redirect(url_for("index"))
 
     opportunity = Opportunity.get_by_id(opportunity_id)
     if not opportunity:
@@ -344,8 +344,8 @@ def edit_opportunity(opportunity_id):
 @app.route("/create_opportunity", methods=["GET", "POST"])
 @login_required
 def create_opportunity():
-    if current_user.email not in ADMIN_EMAILS:
-        return redirect(url_for("index"))
+    # if current_user.email not in ADMIN_EMAILS:
+    #     return redirect(url_for("index"))
 
     class OpportunityForm(FlaskForm):
         title = StringField('Title', [validators.InputRequired()])
