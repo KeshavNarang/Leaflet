@@ -258,7 +258,7 @@ def calendar():
 # Generate city selection form
 def generate_city_form():
     class CityForm(FlaskForm):
-        cities = [(city, city) for city in ['Santa Clara', 'San Mateo', 'Fremont']]
+        cities = [(city, city) for city in ['Santa Clara', 'San Mateo']]
         city = SelectMultipleField('City', choices=cities, option_widget=widgets.CheckboxInput(), coerce=str)
     return CityForm()
 
@@ -344,7 +344,7 @@ def create_opportunity():
         title = StringField('Title', [validators.InputRequired()])
         time_commitment = RadioField('Time Commitment', choices=[("Short", "Short"), ("Medium", "Medium"), ("Long", "Long")], validators=[validators.InputRequired()])
         description = StringField('Description', [validators.InputRequired()])
-        cities = SelectMultipleField('City', choices=[("Santa Clara", "Santa Clara", "Fremont"), ("San Mateo", "San Mateo", "Fremont")], option_widget=widgets.CheckboxInput(), coerce=str)
+        cities = SelectMultipleField('City', choices=[("Santa Clara", "Santa Clara"), ("San Mateo", "San Mateo")], option_widget=widgets.CheckboxInput(), coerce=str)
         due_date = StringField('Due Date', [validators.InputRequired()]) 
 
     form = OpportunityForm()
