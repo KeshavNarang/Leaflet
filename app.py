@@ -304,13 +304,6 @@ def view_opportunity(opportunity_id):
     
     return render_template("view_opportunity.html", opportunity=opportunity)
 
-@app.route("/opportunity/<int:opportunity_id>/mark_done")
-@login_required
-def mark_opportunity_done(opportunity_id):
-    # Here you would implement marking the opportunity as done for the current user
-    # For simplicity, let's just redirect back to index for now
-    return redirect(url_for("index"))
-
 @app.route("/opportunity/<int:opportunity_id>/edit", methods=["GET", "POST"])
 @login_required
 def edit_opportunity(opportunity_id):
@@ -351,7 +344,7 @@ def create_opportunity():
         title = StringField('Title', [validators.InputRequired()])
         time_commitment = RadioField('Time Commitment', choices=[("Short", "Short"), ("Medium", "Medium"), ("Long", "Long")], validators=[validators.InputRequired()])
         description = StringField('Description', [validators.InputRequired()])
-        cities = SelectMultipleField('City', choices=[("Santa Clara", "Santa Clara"), ("San Mateo", "San Mateo")], option_widget=widgets.CheckboxInput(), coerce=str)
+        cities = SelectMultipleField('City', choices=[("Santa Clara", "Santa Clara", "Fremont"), ("San Mateo", "San Mateo", "Fremont")], option_widget=widgets.CheckboxInput(), coerce=str)
         due_date = StringField('Due Date', [validators.InputRequired()]) 
 
     form = OpportunityForm()
