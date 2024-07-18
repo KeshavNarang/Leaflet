@@ -258,7 +258,7 @@ def calendar():
 # Generate city selection form
 def generate_city_form():
     class CityForm(FlaskForm):
-        cities = [(city, city) for city in ['Santa Clara', 'San Mateo']]
+        cities = [(city, city) for city in ['Santa Clara', 'San Mateo', 'Fremont']]
         city = SelectMultipleField('City', choices=cities, option_widget=widgets.CheckboxInput(), coerce=str)
     return CityForm()
 
