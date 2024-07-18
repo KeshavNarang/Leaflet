@@ -47,7 +47,7 @@
             content: info.event.extendedProps.description,
             functionBefore: function(instance, helper) {
               var content = instance.content();
-              instance.content(content.substring(0, 10) + (content.length > 10 ? '...' : ''));
+              instance.content("click to read more");
             },
             delay: 200,
             trigger: 'hover',
