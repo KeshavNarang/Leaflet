@@ -80,10 +80,11 @@
             description.value = quill.root.innerHTML;
         };
 
-        // Initialize Flatpickr date picker
         flatpickr("#due_date", {
             enableTime: true,
-            dateFormat: "F j, Y"
+            dateFormat: "Y-m-d H:i",  // Use this format for input value
+            altInput: true,
+            altFormat: "F j, Y"      // Display format
         });
 
         function updateSelectAll() {

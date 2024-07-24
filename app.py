@@ -79,6 +79,8 @@ def index():
         user_cities = [city.strip() for city in current_user.city.split(',')] if current_user.city else []
         is_admin = current_user.email in ADMIN_EMAILS
         opportunities = Opportunity.get_opportunities_for_user_cities(user_cities, is_admin)
+        opportunities.sort(key=lambda x: x['due_date'])
+
         return render_template("index.html", opportunities=opportunities, ADMIN_EMAILS=ADMIN_EMAILS, OWNER_EMAILS=OWNER_EMAILS, len=len)
 
     else:
