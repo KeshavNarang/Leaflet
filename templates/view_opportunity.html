@@ -15,7 +15,7 @@
             <p class="text-sm font-medium text-green-600">Time Commitment:</p>
             <p class="text-lg text-black mb-2">{{ opportunity['time_commitment'] }}</p>
             <p class="text-sm font-medium text-green-600">Due Date:</p>
-            <p class="text-lg text-black mb-2">{{ opportunity['due_date'] }}</p>
+            <p class="text-lg text-black mb-2">{{ formatted_date }}</p>
             <p class="text-sm font-medium text-green-600">Description:</p>
             <div class="text-lg text-black mb-2 description-content">{{ opportunity['description']|safe }}</div>
         </div>

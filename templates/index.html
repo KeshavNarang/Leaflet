@@ -23,7 +23,7 @@
           </tr>
         </thead>
         <tbody class="divide-y divide-gray-200">
-          {% for opportunity in opportunities %}
+          {% for opportunity, formatted_date in opportunities_with_dates %}
             {% if not opportunity['hidden'] or (opportunity['hidden'] and current_user.email in ADMIN_EMAILS) %}
               <tr class="hover:bg-accent">
                 <td class="py-4 px-4 border border-black">{{ opportunity[1] }}</td>
@@ -36,7 +36,7 @@
                     <a class="text-primary" href="{{ url_for('view_opportunity', opportunity_id=opportunity['id']) }}">{{ opportunity[3] | safe }}</a>
                   {% endif %}               
                 </td>
-                <td class="py-4 px-4 border border-black">{{ opportunity[5] }}</td>
+                <td class="py-4 px-4 border border-black">{{ formatted_date }}</td>
                 {% if current_user.email in ADMIN_EMAILS %}
                   <td class="py-4 px-4 border border-black">
                     <a class="text-primary" href="{{ url_for('edit_opportunity', opportunity_id=opportunity['id']) }}">Edit</a>

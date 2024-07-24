@@ -10,6 +10,7 @@ from flask_wtf import FlaskForm
 from db import init_db_command
 from user import User, Opportunity
 from config import ADMIN_EMAILS, OWNER_EMAILS
+from datetime import datetime
 
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
@@ -81,7 +82,12 @@ def index():
         opportunities = Opportunity.get_opportunities_for_user_cities(user_cities, is_admin)
         opportunities.sort(key=lambda x: x['due_date'])
 
-        return render_template("index.html", opportunities=opportunities, ADMIN_EMAILS=ADMIN_EMAILS, OWNER_EMAILS=OWNER_EMAILS, len=len)
+        opportunities_with_dates = [
+            (opportunity, datetime.strptime(opportunity['due_date'], '%Y-%m-%d %H:%M').strftime('%B %d, %Y'))
+            for opportunity in opportunities
+        ]
+        
+        return render_template("index.html", opportunities=opportunities, opportunities_with_dates=opportunities_with_dates, ADMIN_EMAILS=ADMIN_EMAILS, OWNER_EMAILS=OWNER_EMAILS, len=len)
 
     else:
         return render_template("login.html")
@@ -303,8 +309,9 @@ def view_opportunity(opportunity_id):
     opportunity = Opportunity.get_by_id(opportunity_id)
     if not opportunity:
         abort(404)
-    
-    return render_template("view_opportunity.html", opportunity=opportunity)
+
+    formatted_date = datetime.strptime(opportunity['due_date'], '%Y-%m-%d %H:%M').strftime('%B %d, %Y')
+    return render_template("view_opportunity.html", opportunity=opportunity, formatted_date=formatted_date)
 
 @app.route("/opportunity/<int:opportunity_id>/edit", methods=["GET", "POST"])
 @login_required
