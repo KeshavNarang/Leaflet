@@ -87,10 +87,8 @@ def index():
             for opportunity in opportunities
         ]
 
-        current_date = datetime.now().date()
-        
-        return render_template("index.html", opportunities=opportunities, opportunities_with_dates=opportunities_with_dates, current_date=current_date, ADMIN_EMAILS=ADMIN_EMAILS, OWNER_EMAILS=OWNER_EMAILS, len=len)
-
+        current_datetime = datetime.now().strftime('%Y-%m-%d %H:%M')
+        return render_template("index.html", opportunities=opportunities, opportunities_with_dates=opportunities_with_dates, current_datetime=current_datetime, ADMIN_EMAILS=ADMIN_EMAILS, OWNER_EMAILS=OWNER_EMAILS, len=len)
     else:
         return render_template("login.html")
 def get_google_provider_cfg():
