@@ -67,6 +67,10 @@
         <a class="bg-primary hover:bg-green-600 text-secondary font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" href="{{ url_for('edit_users') }}">Edit Users</a>
       {% endif %}
     </div>
+
+    <div class="space-x-4 mt-8 flex flex-wrap gap-4 justify-center">
+        <a class="bg-primary hover:bg-green-600 text-secondary font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" href="{{ url_for('calendar') }}">View Calendar</a>
+    </div>
     
   {% else %}
     <a class="bg-primary hover:bg-green-600 text-secondary font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" href="{{ url_for('login') }}">Login with Gmail</a>
