@@ -166,9 +166,20 @@ class Opportunity:
     @staticmethod
     def update(opportunity_id, title, time_commitment, description, cities, due_date):
         conn = get_db_connection()
+        
+        # Check if the record exists
+        cursor = conn.execute("SELECT COUNT(*) FROM opportunities WHERE id = ?", (opportunity_id,))
+        record_exists = cursor.fetchone()[0] > 0
+        
+        if not record_exists:
+            conn.close()
+            return False  # Indicate that no record was updated because the ID was not found
+        
+        # Proceed with the update
         conn.execute(
             "UPDATE opportunities SET title = ?, time_commitment = ?, description = ?, cities = ?, due_date = ? WHERE id = ?",
             (title, time_commitment, description, cities, due_date, opportunity_id)
         )
         conn.commit()
         conn.close()
+        return True  # Indicate that the record was successfully updated

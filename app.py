@@ -5,12 +5,12 @@ import requests
 from flask import Flask, redirect, request, url_for, render_template_string, render_template, abort, g
 from flask_login import LoginManager, current_user, login_required, login_user, logout_user
 from oauthlib.oauth2 import WebApplicationClient
-from wtforms import Form, RadioField, StringField, SelectField, SelectMultipleField, widgets, validators
+from wtforms import Form, RadioField, StringField, BooleanField, SelectField, DateTimeField, SelectMultipleField, widgets, validators
 from flask_wtf import FlaskForm
 from db import init_db_command
 from user import User, Opportunity
 from config import ADMIN_EMAILS, OWNER_EMAILS
-from datetime import datetime
+from datetime import datetime, timedelta
 
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
@@ -382,7 +382,7 @@ def edit_opportunity(opportunity_id):
         description = StringField('Description', [validators.InputRequired()], default=opportunity['description'])
         cities = SelectMultipleField('City', choices=[("Santa Clara", "Santa Clara"), ("San Mateo", "San Mateo")], option_widget=widgets.CheckboxInput(), coerce=str, default=opportunity['cities'].split(', '))
         due_date = StringField('Due Date', [validators.InputRequired()], default=opportunity['due_date'])
-
+    
     form = EditOpportunityForm()
     if form.validate_on_submit():
         title = form.title.data
@@ -408,6 +408,8 @@ def create_opportunity():
         description = StringField('Description', [validators.InputRequired()])
         cities = SelectMultipleField('City', choices=[("Santa Clara", "Santa Clara"), ("San Mateo", "San Mateo")], option_widget=widgets.CheckboxInput(), coerce=str)
         due_date = StringField('Due Date', [validators.InputRequired()]) 
+        recurring = BooleanField('Recurring Weekly')
+        end_date = StringField('End Date', validators=[validators.Optional()])
 
     form = OpportunityForm()
     if form.validate_on_submit():
@@ -416,7 +418,21 @@ def create_opportunity():
         description = form.description.data
         cities = ', '.join(form.cities.data)
         due_date = form.due_date.data
-        Opportunity.create(title, time_commitment, description, cities, due_date)
+        recurring = form.recurring.data
+        end_date = form.end_date.data
+        
+        # Convert string dates to datetime objects
+        due_date_dt = datetime.strptime(due_date, '%Y-%m-%d %H:%M')
+        end_date_dt = datetime.strptime(end_date, '%Y-%m-%d %H:%M') if end_date else None
+
+        # If recurrence is enabled, create multiple opportunities
+        if recurring and end_date_dt:
+            while due_date_dt <= end_date_dt:
+                Opportunity.create(title, time_commitment, description, cities, due_date_dt.strftime('%Y-%m-%d %H:%M'))
+                due_date_dt += timedelta(weeks=1)  # Move to the next week
+        else:
+            Opportunity.create(title, time_commitment, description, cities, due_date)
+
         return redirect(url_for("index"))
 
     return render_template("create_opportunity.html", form=form)
