@@ -190,17 +190,17 @@ def callback():
         return redirect(url_for("collect_city"))
     return redirect(url_for("index"))
 
-@app.errorhandler(404)
-def page_not_found(e):
-    return render_template('error.html', error_code=404, error_message="Page Not Found"), 404
+# @app.errorhandler(404)
+# def page_not_found(e):
+#     return render_template('error.html', error_code=404, error_message="Page Not Found"), 404
 
-@app.errorhandler(500)
-def internal_server_error(e):
-    return render_template('error.html', error_code=500, error_message="Internal Server Error"), 500
+# @app.errorhandler(500)
+# def internal_server_error(e):
+#     return render_template('error.html', error_code=500, error_message="Internal Server Error"), 500
 
-@app.errorhandler(Exception)
-def handle_exception(e):
-    return render_template('error.html', error_code=500, error_message="An unexpected error occurred"), 500
+# @app.errorhandler(Exception)
+# def handle_exception(e):
+#     return render_template('error.html', error_code=500, error_message="An unexpected error occurred"), 500
 
 @app.route("/fill_out_form")
 def fill_out_form():
@@ -255,7 +255,7 @@ def delete_user(user_id):
 @login_required
 def resources():
     opportunities = Opportunity.get_all()  # Fetch opportunities from your data source
-    return render_template('resources.html', opportunities=opportunities)
+    return render_template('resources.html', opportunities=opportunities, ADMIN_EMAILS=ADMIN_EMAILS)
 
 @app.route('/calendar')
 @login_required
@@ -311,7 +311,38 @@ def view_opportunity(opportunity_id):
         abort(404)
 
     formatted_date = datetime.strptime(opportunity['due_date'], '%Y-%m-%d %H:%M').strftime('%B %d, %Y')
-    return render_template("view_opportunity.html", opportunity=opportunity, formatted_date=formatted_date)
+    return render_template("view_opportunity.html", opportunity=opportunity, formatted_date=formatted_date, ADMIN_EMAILS=ADMIN_EMAILS)
+
+@app.route("/editor", methods=['GET', 'POST'])
+def editor():
+    if current_user.email not in ADMIN_EMAILS:
+        return redirect(url_for("index"))
+    
+    if request.method == 'POST':
+        new_content = request.form['description']
+        # Save the new content to the database or file
+        with open('templates/resources_content.html', 'w') as file:
+            file.write(new_content)
+        return redirect(url_for('resources'))
+    
+    # Load current content
+    with open('templates/resources_content.html', 'r') as file:
+        current_content = file.read()
+    
+    class WYSIWYG(FlaskForm):
+        description = StringField('Description', [validators.InputRequired()])
+
+    form = WYSIWYG()
+    if form.validate_on_submit():
+        description = form.description.data
+
+    return render_template('edit_resources.html', content=current_content, form=form)
+
+@app.route("/edit_resources")
+def edit_resources():
+    if current_user.email not in ADMIN_EMAILS:
+        return redirect(url_for("index"))
+    return render_template('edit_resources.html')
 
 @app.route("/opportunity/<int:opportunity_id>/edit", methods=["GET", "POST"])
 @login_required

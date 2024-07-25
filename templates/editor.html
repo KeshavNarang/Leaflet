@@ -1,0 +1,39 @@
+{% extends "form_base.html" %}
+
+{% block title %}Edit Page{% endblock %}
+
+{% block content %}
+    <form method="post" class="space-y-6">
+        {{ form.hidden_tag() }}
+        <div>
+            {{ form.description.label(class='block text-gray-700 text-sm font-bold mb-2') }}
+            <div id="editor-container" class="w-full h-32 px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"></div>
+            <input type="hidden" name="description" id="hidden-description">
+        </div>
+        <div>
+            <input type="submit" value="Create"
+                class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+        </div>
+        <div>
+            <a href="{{ url_for('index') }}"
+                class="w-full bg-gray-400 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline block text-center mt-4">Cancel</a>
+        </div>
+    </form>
+
+    <!-- Include Quill library -->
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+
+    <script>
+        // Initialize Quill editor
+        var quill = new Quill('#editor-container', {
+            theme: 'snow'
+        });
+
+        // Attach a listener to the form's submit event to copy the editor's contents into the hidden input
+        document.querySelector('form').onsubmit = function() {
+            var description = document.querySelector('#hidden-description');
+            description.value = quill.root.innerHTML;
+        };
+    </script>
+{% endblock %}
