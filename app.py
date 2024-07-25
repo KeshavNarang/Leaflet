@@ -55,6 +55,28 @@ credentials = ServiceAccountCredentials.from_json_keyfile_name(credentials_path,
 # Authorize with Google Sheets API
 gc = gspread.authorize(credentials)
 
+spreadsheet_url = 'https://docs.google.com/spreadsheets/d/1boIqyXxDDv3ism27rnK9hKtqDV1JmwO8U92mTqL-2hY/'
+sh = gc.open_by_url(spreadsheet_url)
+
+# Select a worksheet
+worksheet = sh.worksheet("Form Responses 2")
+
+# Get all the values in the worksheet
+data = worksheet.get_all_values()
+
+# Initialize the list for owner emails
+OWNER_EMAILS = []
+
+# Iterate over the rows starting from the second row (index 1) since the first row is the header
+for row in data[1:]:
+    # Check if the fourth column is "Yes"
+    if row[3].strip().lower() == "yes":
+        # Add the value in the second column to the list
+        OWNER_EMAILS.append(row[1].strip())
+
+# Get all values from the worksheet
+values = worksheet.get_all_values()
+
 spreadsheet_url = 'https://docs.google.com/spreadsheets/d/1WCDdY0UU02dWUl5nxWnXz816l3sJCMRj5bE8dwooC7Y/'
 sh = gc.open_by_url(spreadsheet_url)
 
@@ -218,7 +240,7 @@ def view_users():
 @app.route("/edit_users", methods=["GET", "POST"])
 @login_required
 def edit_users():
-    if current_user.email not in OWNER_EMAILS:
+    if current_user.email not in ADMIN_EMAILS:
         abort(403)  # Forbidden if not an owner
 
     users = User.get_all()  # Fetch all users from database
@@ -227,7 +249,7 @@ def edit_users():
 @app.route("/edit_city/<string:user_id>", methods=["GET", "POST"])
 @login_required
 def edit_city(user_id):
-    if current_user.email not in OWNER_EMAILS:
+    if current_user.email not in ADMIN_EMAILS:
         abort(403)  # Forbidden if not an owner
 
     user = User.get(user_id)
@@ -245,7 +267,7 @@ def edit_city(user_id):
 @app.route("/delete_user/<string:user_id>", methods=["GET", "POST"])
 @login_required
 def delete_user(user_id):
-    if current_user.email not in OWNER_EMAILS:
+    if current_user.email not in ADMIN_EMAILS:
         abort(403)  # Forbidden if not an owner
 
     User.remove(user_id)
