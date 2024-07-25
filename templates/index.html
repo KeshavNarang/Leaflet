@@ -8,7 +8,6 @@
   {% if current_user.is_authenticated %}
     <p class="text-xl mb-1">Hello, {{ current_user.name }}</p>
     <p class="text-lg mb-4 mt-1">You are viewing events for the following counties: {{ current_user.city or "Santa Clara" }}</p>
-
     <div class="mt-8 shadow-lg rounded-lg overflow-hidden border border-gray-200 overflow-x-auto">
       <table class="min-w-full bg-white">
         <thead class="bg-primary text-secondary">
@@ -25,7 +24,7 @@
         <tbody class="divide-y divide-gray-200">
           {% for opportunity, formatted_date in opportunities_with_dates %}
             {% if not opportunity['hidden'] or (opportunity['hidden'] and current_user.email in ADMIN_EMAILS) %}
-              <tr class="hover:bg-accent {% if opportunity['hidden'] %}bg-gray-200{% endif %}">
+              <tr class="hover:bg-accent {% if opportunity['hidden'] or formatted_date > opportunity[5] %}bg-gray-200{% endif %}">
                 <td class="py-4 px-4 border border-black">{{ opportunity[1] }}</td>
                 <td class="py-4 px-4 border border-black">{{ opportunity[2] }}</td>
                 <td class="py-4 px-4 border border-black">

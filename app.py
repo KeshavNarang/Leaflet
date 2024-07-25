@@ -86,8 +86,10 @@ def index():
             (opportunity, datetime.strptime(opportunity['due_date'], '%Y-%m-%d %H:%M').strftime('%B %d, %Y'))
             for opportunity in opportunities
         ]
+
+        current_date = datetime.now().date()
         
-        return render_template("index.html", opportunities=opportunities, opportunities_with_dates=opportunities_with_dates, ADMIN_EMAILS=ADMIN_EMAILS, OWNER_EMAILS=OWNER_EMAILS, len=len)
+        return render_template("index.html", opportunities=opportunities, opportunities_with_dates=opportunities_with_dates, current_date=current_date, ADMIN_EMAILS=ADMIN_EMAILS, OWNER_EMAILS=OWNER_EMAILS, len=len)
 
     else:
         return render_template("login.html")
