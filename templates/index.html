@@ -3,6 +3,10 @@
 {% block title %}Home{% endblock %}
 
 {% block content %}
+  <style>
+    .custom-link { color: #457D58; text-decoration: underline; }
+    .custom-link:hover { color: #5FB54A; }
+  </style>
   <h1 class="text-5xl font-bold mb-8 text-primary title-animation">Leaflet</h1>
 
   {% if current_user.is_authenticated %}
@@ -71,6 +75,14 @@
     <div class="space-x-4 mt-8 flex flex-wrap gap-4 justify-center">
         <a class="bg-primary hover:bg-green-600 text-secondary font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" href="{{ url_for('calendar') }}">View Calendar</a>
     </div>
+
+    <br>
+    <p class="text-lg mb-4">
+      Interested in contributing to Leaflet? Fill out <a href="https://docs.google.com/forms/d/1nanS6dazuUuDfMD7SoWT_hWPTXIQ1_AMKcyjo7gqgl0" target="_blank" class="custom-link"> this form</a>. 
+    </p>
+    <p class="text-lg mb-4">
+      To contact us, email <a href="mailto:theleafletforum@gmail.com" class="custom-link">theleafletforum@gmail.com</a>.
+    </p>
     
   {% else %}
     <a class="bg-primary hover:bg-green-600 text-secondary font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" href="{{ url_for('login') }}">Login with Gmail</a>
