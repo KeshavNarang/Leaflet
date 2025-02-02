@@ -53,7 +53,7 @@ scope = ['https://spreadsheets.google.com/feeds', 'https://www.googleapis.com/au
 # credentials = ServiceAccountCredentials.from_json_keyfile_name(credentials_path, scope)
 
 # Get the Base64-encoded credentials from an environment variable
-encoded_credentials = os.getenv("GOOGLE_CREDENTIALS_BASE64")
+encoded_credentials = os.getenv("GOOGLE_CREDENTIALS_BASE_64")
 
 # Decode and load the credentials
 if encoded_credentials:
