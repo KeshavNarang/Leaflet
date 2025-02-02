@@ -11,7 +11,7 @@ from db import init_db_command
 from user import User, Opportunity
 from config import ADMIN_EMAILS, OWNER_EMAILS
 from datetime import datetime, timedelta
-
+import base64
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 
@@ -47,10 +47,21 @@ client = WebApplicationClient(GOOGLE_CLIENT_ID)
 scope = ['https://spreadsheets.google.com/feeds', 'https://www.googleapis.com/auth/drive']
 
 # Path to the JSON file with credentials
-credentials_path = 'credentials.json'
+# credentials_path = 'credentials.json'
 
 # Load credentials from the JSON key file
-credentials = ServiceAccountCredentials.from_json_keyfile_name(credentials_path, scope)
+# credentials = ServiceAccountCredentials.from_json_keyfile_name(credentials_path, scope)
+
+# Get the Base64-encoded credentials from an environment variable
+encoded_credentials = os.getenv("GOOGLE_CREDENTIALS_BASE64")
+
+# Decode and load the credentials
+if encoded_credentials:
+    credentials_info = json.loads(base64.b64decode(encoded_credentials))
+    credentials = ServiceAccountCredentials.from_json_keyfile_dict(credentials_info, scope)
+    gc = gspread.authorize(credentials)
+else:
+    raise ValueError("Missing GOOGLE_CREDENTIALS_BASE64 environment variable")
 
 # Authorize with Google Sheets API
 gc = gspread.authorize(credentials)
